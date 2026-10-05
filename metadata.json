@@ -1,0 +1,6 @@
+{
+  "name": "Khu Vườn Số · Digital Garden",
+  "description": "Trang web Digital Garden cá nhân với Markdown, KaTeX, phân loại chủ đề, theo dõi lượt xem và bình luận trực tiếp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

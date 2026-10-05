@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: digital-garden
+    runtime: docker
+    plan: free
+    healthCheckPath: /healthz
+    envVars:
+      - key: ADMIN_TOKEN
+        generateValue: true
+    # Free plan has no persistent disk: comments/views reset on each deploy.
+    # To keep them, switch to a paid plan and uncomment:
+    # disk:
+    #   name: garden-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
+    # and add an env var DATA_DIR=/var/data

@@ -1,0 +1,2594 @@
+<!doctype html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khu Vườn Số · Personal Digital Garden (Full-Stack Edition)</title>
+  <meta name="description" content="Khu vườn tri thức số cá nhân: Nghiên cứu khoa học, Ý tưởng dự án và Chương hồi văn học. Tích hợp KaTeX, Markdown, Supabase và Netlify." />
+
+  <!-- Google Fonts: Plus Jakarta Sans, Instrument Serif, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS v3 & Typography Plugin -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            stone: {
+              50: '#fafaf9',
+              100: '#f5f5f4',
+              200: '#e7e5e4',
+              300: '#d6d3d1',
+              400: '#a8a29e',
+              500: '#78716c',
+              600: '#57534e',
+              700: '#44403c',
+              800: '#292524',
+              900: '#1c1917',
+              950: '#0c0a09',
+            },
+            emerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- KaTeX CSS & JS for LaTeX equations ($...$ and $$...$$) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+  <!-- Marked.js (Markdown Engine) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Supabase JS Client v2 (Backend as a Service) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* KaTeX override for smooth integration */
+    .katex-display {
+      margin: 1.25em 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.5rem 0;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #a8a29e;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #44403c;
+    }
+    /* Reader prose custom styles */
+    .reader-serif {
+      font-family: "Instrument Serif", Georgia, serif !important;
+    }
+    .reader-sans {
+      font-family: "Plus Jakarta Sans", sans-serif !important;
+    }
+    .reader-prose p {
+      margin-bottom: 1.25rem;
+      line-height: 1.8;
+    }
+    .reader-prose h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(168, 162, 158, 0.2);
+      padding-bottom: 0.25rem;
+    }
+    .reader-prose h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .reader-prose blockquote {
+      border-left: 3px solid #059669;
+      padding-left: 1rem;
+      font-style: italic;
+      margin: 1.25rem 0;
+      color: #78716c;
+    }
+    .dark .reader-prose blockquote {
+      color: #a8a29e;
+    }
+    .reader-prose pre {
+      background-color: #1c1917;
+      color: #f5f5f4;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      font-family: "Fira Code", monospace;
+      font-size: 0.875rem;
+    }
+    .reader-prose code:not(pre code) {
+      background-color: rgba(168, 162, 158, 0.15);
+      padding: 0.15rem 0.35rem;
+      border-radius: 0.25rem;
+      font-family: "Fira Code", monospace;
+      font-size: 0.85em;
+      color: #059669;
+    }
+  </style>
+</head>
+
+<body class="bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans antialiased min-h-screen selection:bg-emerald-500/20 selection:text-emerald-700 dark:selection:text-emerald-300 transition-colors duration-200">
+
+  <!-- ========================================================================= -->
+  <!-- 1. TOP NAVIGATION BAR                                                    -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-30 w-full backdrop-blur-md bg-stone-50/90 dark:bg-stone-950/90 border-b border-stone-200 dark:border-stone-800 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      
+      <!-- Brand & Sprout Logo -->
+      <a href="#" onclick="resetFilters(); return false;" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl bg-emerald-600/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold text-lg border border-emerald-500/20 group-hover:scale-105 transition-transform shadow-2xs">
+          🌱
+        </div>
+        <div>
+          <span class="font-serif text-xl font-bold tracking-tight text-stone-900 dark:text-stone-100 block leading-tight">
+            Khu Vườn Số
+          </span>
+          <span class="text-[11px] text-stone-500 dark:text-stone-400 block font-mono">
+            Digital Garden · Full-Stack
+          </span>
+        </div>
+      </a>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Cloud Sync Status Badge -->
+        <button id="cloudStatusBtn" onclick="openSettingsModal()" class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border transition-colors shadow-2xs cursor-pointer bg-stone-100 dark:bg-stone-900 text-stone-600 dark:text-stone-300 border-stone-200 dark:border-stone-800 hover:border-emerald-500" title="Nhấn để cấu hình Supabase Cloud">
+          <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="cloudStatusText">Demo Mode</span>
+        </button>
+
+        <!-- User Role Status Badge (Khách vs Admin) -->
+        <div id="userRoleBadge" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border transition-colors bg-stone-100 dark:bg-stone-900 text-stone-600 dark:text-stone-300 border-stone-200 dark:border-stone-800 shadow-2xs">
+          <span id="userRoleIcon">👤</span>
+          <span id="userRoleText">Khách</span>
+        </div>
+
+        <!-- Admin Action: New Note Button (Visible ONLY to Admin) -->
+        <button id="adminNewNoteBtn" onclick="openNewNoteModal()" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-xs cursor-pointer">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Viết bài mới</span>
+        </button>
+
+        <!-- Auth Buttons: Login Admin vs Logout Admin -->
+        <button id="loginAdminBtn" onclick="openLoginModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:border-emerald-500 hover:text-emerald-600 transition-colors shadow-2xs cursor-pointer" title="Đăng nhập dành cho Quản trị viên">
+          <i data-lucide="key-round" class="w-3.5 h-3.5 text-amber-500"></i>
+          <span class="hidden sm:inline">Đăng nhập Admin</span>
+        </button>
+
+        <button id="logoutAdminBtn" onclick="handleAdminLogout()" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-colors shadow-2xs cursor-pointer" title="Đăng xuất khỏi quyền Admin">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Đăng xuất</span>
+        </button>
+
+        <!-- Dark / Light Theme Toggle -->
+        <button onclick="toggleTheme()" class="p-2 rounded-lg text-stone-600 dark:text-stone-300 bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:text-stone-950 dark:hover:text-stone-50 transition-colors cursor-pointer" title="Chuyển chế độ sáng/tối">
+          <i id="themeIcon" data-lucide="moon" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Settings (Gear) Button -->
+        <button onclick="openSettingsModal()" class="p-2 rounded-lg text-stone-600 dark:text-stone-300 bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:text-stone-950 dark:hover:text-stone-50 transition-colors cursor-pointer" title="Cài đặt Supabase & Schema SQL">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN CONTAINER                                                         -->
+  <!-- ========================================================================= -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+
+    <!-- Hero Profile Section -->
+    <section class="space-y-6 pb-6 border-b border-stone-200 dark:border-stone-800">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        <img id="profileAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Avatar" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover ring-2 ring-emerald-500/30 shadow-md shrink-0">
+        <div class="space-y-1.5 flex-1">
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 id="profileNameText" class="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+              Nguyễn Minh Khang (Alex Nguyen)
+            </h1>
+            <span id="profileTitleText" class="text-xs font-mono text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 dark:bg-emerald-500/20">
+              Senior AI Researcher & Full-Stack Architect
+            </span>
+            <!-- Admin Edit Profile Button -->
+            <button id="adminEditProfileBtn" onclick="openEditProfileModal()" class="hidden items-center gap-1 px-2 py-0.5 rounded text-xs font-mono text-amber-700 dark:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition-colors ml-1 cursor-pointer" title="Chỉnh sửa thông tin hồ sơ (Chỉ dành cho Admin)">
+              <i data-lucide="edit-3" class="w-3 h-3"></i>
+              <span>Sửa hồ sơ</span>
+            </button>
+          </div>
+          <p id="profileBioText" class="text-sm text-stone-600 dark:text-stone-400 leading-relaxed max-w-3xl">
+            Chào mừng bạn đến với khu vườn tri thức số. Nơi đây nuôi dưỡng các nghiên cứu toán học & AI vi phân, ươm mầm các dự án phần mềm mã nguồn mở và lưu giữ những chương hồi tiểu thuyết sáng tác. Tích hợp Markdown, KaTeX, Cloud Database PostgreSQL (Supabase) và Netlify.
+          </p>
+          <div class="flex flex-wrap items-center gap-4 text-xs text-stone-500 font-mono pt-1">
+            <span class="flex items-center gap-1.5"><i data-lucide="book-open" class="w-3.5 h-3.5 text-emerald-600"></i> <span id="statTotalPosts">0</span> bài viết</span>
+            <span>·</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i> <span id="statTotalClaps">0</span> lượt vỗ tay</span>
+            <span>·</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="message-square" class="w-3.5 h-3.5 text-sky-500"></i> <span id="statTotalComments">0</span> bình luận</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Stage Guide (Zero-pill text representation) -->
+      <div class="p-3.5 rounded-xl bg-stone-100/70 dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div onclick="setStageFilter('seedling')" class="flex items-center gap-2.5 cursor-pointer hover:text-emerald-600 transition-colors">
+          <span class="text-base">🌱</span>
+          <div>
+            <p class="font-semibold text-stone-800 dark:text-stone-200">Seedling (Hạt mầm)</p>
+            <p class="text-[11px] text-stone-500">Ý tưởng sơ khai, bản nháp đang ấp ủ</p>
+          </div>
+        </div>
+        <div onclick="setStageFilter('budding')" class="flex items-center gap-2.5 cursor-pointer hover:text-emerald-600 transition-colors">
+          <span class="text-base">🌿</span>
+          <div>
+            <p class="font-semibold text-stone-800 dark:text-stone-200">Budding (Đang nở)</p>
+            <p class="text-[11px] text-stone-500">Đã thành hình khung luận điểm & bằng chứng</p>
+          </div>
+        </div>
+        <div onclick="setStageFilter('evergreen')" class="flex items-center gap-2.5 cursor-pointer hover:text-emerald-600 transition-colors">
+          <span class="text-base">🌲</span>
+          <div>
+            <p class="font-semibold text-stone-800 dark:text-stone-200">Evergreen (Thường xanh)</p>
+            <p class="text-[11px] text-stone-500">Bài hoàn chỉnh, được bổ sung trường tồn</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 3. MULTI-DIMENSIONAL FILTER TOOLBAR                                       -->
+    <!-- ========================================================================= -->
+    <section class="space-y-4">
+      
+      <!-- Primary Category Tabs -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-1 p-1 bg-stone-200/60 dark:bg-stone-900 rounded-xl text-xs font-medium">
+          <button id="catTabAll" onclick="setCategoryFilter('all')" class="px-3 py-1.5 rounded-lg transition-colors bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-2xs font-semibold">
+            Tất cả
+          </button>
+          <button id="catTabResearch" onclick="setCategoryFilter('research')" class="px-3 py-1.5 rounded-lg transition-colors text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">
+            Khoa học
+          </button>
+          <button id="catTabIdeas" onclick="setCategoryFilter('ideas')" class="px-3 py-1.5 rounded-lg transition-colors text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">
+            Ý tưởng
+          </button>
+          <button id="catTabStories" onclick="setCategoryFilter('stories')" class="px-3 py-1.5 rounded-lg transition-colors text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">
+            Truyện
+          </button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-64">
+          <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input id="searchInput" type="text" oninput="onSearchChange(this.value)" placeholder="Tìm kiếm bài viết, tag, KaTeX..." class="w-full pl-9 pr-8 py-1.5 text-xs rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-hidden focus:border-emerald-500">
+          <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600">
+            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage & Active Filters Row -->
+      <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-stone-500">
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
+          <span class="text-[11px] text-stone-400">Chu kỳ sống:</span>
+          <button id="stageBtnAll" onclick="setStageFilter('all')" class="px-2 py-0.5 rounded text-emerald-700 dark:text-emerald-400 font-semibold bg-emerald-500/10">Tất cả</button>
+          <button id="stageBtnSeedling" onclick="setStageFilter('seedling')" class="px-2 py-0.5 rounded hover:bg-stone-100 dark:hover:bg-stone-900">🌱 Seedling</button>
+          <button id="stageBtnBudding" onclick="setStageFilter('budding')" class="px-2 py-0.5 rounded hover:bg-stone-100 dark:hover:bg-stone-900">🌿 Budding</button>
+          <button id="stageBtnEvergreen" onclick="setStageFilter('evergreen')" class="px-2 py-0.5 rounded hover:bg-stone-100 dark:hover:bg-stone-900">🌲 Evergreen</button>
+        </div>
+
+        <div id="activeFilterNotice" class="hidden items-center gap-2 text-rose-600 dark:text-rose-400">
+          <span>Đang lọc</span>
+          <button onclick="resetFilters()" class="hover:underline flex items-center gap-1">
+            <i data-lucide="x" class="w-3 h-3"></i> Xóa lọc
+          </button>
+        </div>
+      </div>
+
+      <!-- Tag Cloud -->
+      <div id="tagCloudContainer" class="flex flex-wrap items-center gap-1.5 text-[11px] font-mono text-stone-500">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 4. POSTS LIST                                                             -->
+    <!-- ========================================================================= -->
+    <section>
+      <div class="flex items-center justify-between pb-3 text-xs font-mono text-stone-500">
+        <span id="postCountIndicator">Đang tải bài viết...</span>
+        <span>Xếp theo ngày mới nhất</span>
+      </div>
+
+      <!-- Posts Container -->
+      <div id="postsList" class="space-y-4">
+        <!-- Dynamic posts rendered here -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden py-16 text-center rounded-2xl border border-dashed border-stone-300 dark:border-stone-800 bg-white/50 dark:bg-stone-900/40">
+        <i data-lucide="sprout" class="w-10 h-10 mx-auto text-stone-400 mb-2 opacity-50"></i>
+        <p class="text-sm font-semibold text-stone-700 dark:text-stone-300">Không tìm thấy bài viết nào phù hợp</p>
+        <p class="text-xs text-stone-400 mt-1">Hãy thử xóa bộ lọc hoặc viết một bài ghi chú mới.</p>
+        <button onclick="resetFilters()" class="mt-4 px-3 py-1.5 text-xs rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700">
+          Xem tất cả bài viết
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- 5. NETLIFY CONTACT FORM & FOOTER                                          -->
+  <!-- ========================================================================= -->
+  <footer class="mt-20 border-t border-stone-200 dark:border-stone-800 bg-stone-100/60 dark:bg-stone-900/40 py-12 text-stone-600 dark:text-stone-400">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-10">
+      
+      <!-- Left: Netlify Form Contact -->
+      <div class="space-y-3">
+        <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100 flex items-center gap-2">
+          <span>📬</span>
+          <span>Gửi Tin Nhắn Cho Người Làm Vườn</span>
+        </h3>
+        <p class="text-xs text-stone-500 leading-relaxed">
+          Biểu mẫu tích hợp Netlify Forms. Mọi tin nhắn phản hồi, góp ý nghiên cứu hoặc đề xuất dự án sẽ được chuyển trực tiếp vào hộp thư.
+        </p>
+
+        <!-- NETLIFY FORM DECLARATION -->
+        <form name="contact" method="POST" data-netlify="true" class="space-y-3 pt-2 text-xs">
+          <input type="hidden" name="form-name" value="contact" />
+          
+          <div>
+            <label class="block font-medium mb-1 text-stone-700 dark:text-stone-300">Họ và tên</label>
+            <input type="text" name="name" required placeholder="Nguyễn Văn A" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="block font-medium mb-1 text-stone-700 dark:text-stone-300">Địa chỉ Email</label>
+            <input type="email" name="email" required placeholder="alex@example.com" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="block font-medium mb-1 text-stone-700 dark:text-stone-300">Nội dung tin nhắn</label>
+            <textarea name="message" rows="3" required placeholder="Nội dung thảo luận..." class="w-full px-3 py-2 rounded-lg bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500 resize-none"></textarea>
+          </div>
+
+          <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition-colors flex items-center gap-1.5">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>Gửi qua Netlify</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right: About & Architecture -->
+      <div class="space-y-4 flex flex-col justify-between">
+        <div class="space-y-2">
+          <h4 class="font-serif font-bold text-base text-stone-900 dark:text-stone-100">
+            Triết lý Digital Garden (Khu vườn tri thức số)
+          </h4>
+          <p class="text-xs text-stone-500 leading-relaxed">
+            Khác với mạng xã hội chỉ tôn sùng dòng thời gian nhất thời (Streams), khu vườn số nuôi dưỡng các tư tưởng qua từng thời kỳ: từ hạt mầm sơ khởi đến bài viết trường tồn thường xanh.
+          </p>
+          <div class="p-3 rounded-xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-xs font-mono space-y-1">
+            <p class="text-emerald-700 dark:text-emerald-400 font-semibold">Công nghệ tích hợp:</p>
+            <p class="text-stone-500">• Frontend: Single-file HTML5, Tailwind CSS, KaTeX, Marked.js</p>
+            <p class="text-stone-500">• Backend: Supabase PostgreSQL (Posts & Comments) & Storage Bucket</p>
+            <p class="text-stone-500">• Hosting & Forms: Netlify ready-to-deploy</p>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-stone-200 dark:border-stone-800 text-xs text-stone-400 flex flex-wrap items-center justify-between gap-2 font-mono">
+          <span>© 2026 Khu Vườn Số · Alex Nguyen</span>
+          <button onclick="openSettingsModal()" class="hover:text-emerald-600 transition-colors">
+            Cấu hình Supabase & SQL Schema
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- 6. READER MODAL (FULL ARTICLE & STORY READER & COMMENTS)                  -->
+  <!-- ========================================================================= -->
+  <div id="readerModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 dark:bg-black/80 backdrop-blur-xs flex items-start justify-center p-3 sm:p-6 sm:py-10">
+    <div class="relative w-full max-w-3xl bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-800 overflow-hidden my-auto flex flex-col">
+      
+      <!-- Top Action Bar -->
+      <div class="sticky top-0 z-10 flex items-center justify-between px-5 py-3.5 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md border-b border-stone-200 dark:border-stone-800">
+        <div class="flex items-center gap-2">
+          <button onclick="closeReader()" class="flex items-center gap-1.5 text-xs font-medium text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 transition-colors cursor-pointer">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Quay lại</span>
+          </button>
+
+          <!-- Admin Controls (Edit & Delete current note) -->
+          <div id="adminReaderActions" class="hidden items-center gap-1.5 ml-2 pl-2 border-l border-stone-200 dark:border-stone-700">
+            <button onclick="openEditPostModal(activeReaderPostId)" class="flex items-center gap-1 px-2.5 py-1 rounded text-xs font-mono text-amber-700 dark:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition-colors cursor-pointer" title="Chỉnh sửa bài viết">
+              <i data-lucide="edit" class="w-3.5 h-3.5"></i>
+              <span>Sửa bài</span>
+            </button>
+            <button onclick="deletePost(activeReaderPostId)" class="flex items-center gap-1 px-2.5 py-1 rounded text-xs font-mono text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-colors cursor-pointer" title="Xóa bài viết">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              <span>Xóa</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Story Reader Controls (Font & Size) -->
+        <div id="storyControls" class="flex items-center gap-2 text-xs font-mono">
+          <span class="text-stone-400 hidden sm:inline">Phông:</span>
+          <button id="fontSansBtn" onclick="setReaderFont('sans')" class="px-2 py-1 rounded bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 font-semibold" title="Font Hiện đại Sans-Serif">Sans</button>
+          <button id="fontSerifBtn" onclick="setReaderFont('serif')" class="px-2 py-1 rounded hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500 font-serif" title="Font Văn học Serif">Serif</button>
+          <span class="text-stone-300 dark:text-stone-700">|</span>
+          <button onclick="changeReaderFontSize(-1)" class="px-1.5 py-1 rounded hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500" title="Giảm cỡ chữ">A-</button>
+          <button onclick="changeReaderFontSize(1)" class="px-1.5 py-1 rounded hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500 font-bold" title="Tăng cỡ chữ">A+</button>
+          <button onclick="closeReader()" class="p-1 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 ml-2">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Reader Body -->
+      <div id="readerScrollArea" class="p-6 sm:p-10 space-y-6 overflow-y-auto max-h-[85vh]">
+        
+        <!-- Header Meta -->
+        <div class="space-y-3 pb-6 border-b border-stone-200 dark:border-stone-800">
+          <div class="flex flex-wrap items-center gap-2 text-xs font-mono text-stone-500">
+            <span id="readerStageBadge" class="flex items-center gap-1 font-semibold text-stone-700 dark:text-stone-300"></span>
+            <span>·</span>
+            <span id="readerCategoryBadge" class="uppercase text-emerald-700 dark:text-emerald-400"></span>
+            <span>·</span>
+            <span id="readerDate"></span>
+          </div>
+
+          <h1 id="readerTitle" class="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight leading-snug"></h1>
+
+          <!-- Summary Callout -->
+          <div id="readerSummaryBox" class="p-4 rounded-xl bg-stone-100/70 dark:bg-stone-800/60 border-l-4 border-emerald-600 text-sm text-stone-700 dark:text-stone-300 italic leading-relaxed">
+            <span id="readerSummary"></span>
+          </div>
+
+          <!-- Tags -->
+          <div id="readerTags" class="flex flex-wrap items-center gap-1.5 font-mono text-xs text-emerald-600 dark:text-emerald-400"></div>
+
+          <!-- File Attachment Notice (PDF or image) -->
+          <div id="readerFileContainer" class="hidden pt-2">
+            <!-- Dynamic file box -->
+          </div>
+        </div>
+
+        <!-- Rendered Markdown & KaTeX Content -->
+        <article id="readerContent" class="reader-prose reader-sans text-stone-800 dark:text-stone-200 leading-relaxed text-base">
+          <!-- Rendered via marked & katex -->
+        </article>
+
+        <!-- BibTeX Citation Box (for research papers) -->
+        <div id="readerBibtexContainer" class="hidden space-y-2 p-4 rounded-xl bg-stone-950 text-stone-100 font-mono text-xs border border-stone-800">
+          <div class="flex items-center justify-between text-stone-400 pb-1 border-b border-stone-800">
+            <span class="font-semibold text-emerald-400">Trích dẫn BibTeX (Academic Citation)</span>
+            <button onclick="copyBibtex()" class="hover:text-white flex items-center gap-1">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span id="copyBibtexText">Sao chép</span>
+            </button>
+          </div>
+          <pre id="readerBibtexContent" class="overflow-x-auto text-[11px] leading-relaxed text-stone-300 p-0 m-0 bg-transparent"></pre>
+        </div>
+
+        <!-- Interactive Claps Bar -->
+        <div class="pt-6 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+          <button id="readerClapBtn" onclick="handleReaderClap()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300/60 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-300 hover:scale-105 active:scale-95 transition-transform cursor-pointer font-mono font-semibold text-sm">
+            <span class="text-lg">👏</span>
+            <span id="readerClapCount">0</span> lượt vỗ tay
+          </button>
+
+          <span class="text-xs text-stone-400 font-mono">Tương tác thời gian thực</span>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- COMMENTS SECTION                                                    -->
+        <!-- =================================================================== -->
+        <section class="pt-8 border-t border-stone-200 dark:border-stone-800 space-y-6">
+          <div class="flex items-center justify-between">
+            <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100 flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4 text-emerald-600"></i>
+              <span>Bình luận & Thảo luận</span>
+            </h3>
+            <span id="readerCommentsCount" class="text-xs font-mono text-stone-400">0 bình luận</span>
+          </div>
+
+          <!-- New Comment Form -->
+          <form onsubmit="submitComment(event)" class="p-4 rounded-xl bg-stone-100/70 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-800 space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-stone-700 dark:text-stone-300 mb-1">Tên của bạn *</label>
+              <input id="commentAuthorInput" type="text" required placeholder="Ví dụ: TS. Trần Nam, Độc giả..." class="w-full px-3 py-1.5 text-xs rounded-lg bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-stone-700 dark:text-stone-300 mb-1">Nội dung bình luận *</label>
+              <textarea id="commentContentInput" rows="2" required placeholder="Chia sẻ góc nhìn hoặc câu hỏi của bạn về bài viết..." class="w-full p-2.5 text-xs rounded-lg bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500 resize-none"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <span id="commentStatusNotice" class="text-xs text-stone-400 font-mono"></span>
+              <button id="commentSubmitBtn" type="submit" class="px-3.5 py-1.5 text-xs rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center gap-1.5 transition-colors">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                <span>Gửi bình luận</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Comments List Container -->
+          <div id="readerCommentsList" class="space-y-3">
+            <!-- Dynamic comments rendered here -->
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7. PUBLISH NEW NOTE MODAL (WITH LIVE PREVIEW & FILE UPLOAD)               -->
+  <!-- ========================================================================= -->
+  <div id="newNoteModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 dark:bg-black/80 backdrop-blur-xs flex items-start justify-center p-3 sm:p-6 sm:py-10">
+    <div class="relative w-full max-w-3xl bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-800 overflow-hidden my-auto flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-800">
+        <div class="flex items-center gap-2">
+          <div class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <i data-lucide="pen-tool" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100">Gieo Mầm Ghi Chú Mới</h3>
+            <p class="text-xs text-stone-500 font-mono">Xuất bản bài viết vào Supabase Database & Storage</p>
+          </div>
+        </div>
+
+        <button onclick="closeNewNoteModal()" class="p-1 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Form Body -->
+      <form id="newNoteForm" onsubmit="handleCreatePost(event)" class="p-6 space-y-4 overflow-y-auto max-h-[80vh] text-xs">
+        
+        <!-- Title -->
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Tiêu đề bài viết *</label>
+          <input id="noteTitle" type="text" required placeholder="Nhập tiêu đề ý tưởng, bài nghiên cứu hoặc tên chương..." class="w-full px-3 py-2 text-sm rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+        </div>
+
+        <!-- Category & Growth Stage -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Chủ đề phân loại (Category) *</label>
+            <select id="noteCategory" class="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+              <option value="research">🔬 Khoa học (research)</option>
+              <option value="ideas">💡 Ý tưởng (ideas)</option>
+              <option value="stories">📖 Truyện (stories)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Chu kỳ phát triển (Growth Stage) *</label>
+            <select id="noteGrowthStage" class="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+              <option value="seedling">🌱 Seedling (Hạt mầm sơ khởi)</option>
+              <option value="budding">🌿 Budding (Chồi non phát triển)</option>
+              <option value="evergreen">🌲 Evergreen (Bền vững thường xanh)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tags & Summary -->
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Thẻ phân loại (Tags, cách nhau bằng dấu phẩy)</label>
+          <input id="noteTags" type="text" placeholder="Quantum, Deep Learning, Sci-Fi..." class="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500 font-mono">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Nội dung tóm tắt (Summary)</label>
+          <textarea id="noteSummary" rows="2" placeholder="Tóm tắt ngắn gọn 1-2 câu về luận điểm chính..." class="w-full p-2.5 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500 resize-none"></textarea>
+        </div>
+
+        <!-- Content Editor with Tabs: Edit / Live Preview -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="font-semibold text-stone-800 dark:text-stone-200">Nội dung bài viết (Markdown & KaTeX) *</label>
+            <div class="flex items-center gap-1 font-mono text-[11px] p-0.5 bg-stone-200/60 dark:bg-stone-800 rounded">
+              <button type="button" id="tabEditBtn" onclick="switchEditorTab('edit')" class="px-2 py-0.5 rounded bg-white dark:bg-stone-700 font-semibold shadow-2xs">Soạn thảo</button>
+              <button type="button" id="tabPreviewBtn" onclick="switchEditorTab('preview')" class="px-2 py-0.5 rounded text-stone-500 hover:text-stone-900 dark:hover:text-stone-100">Xem trước</button>
+            </div>
+          </div>
+
+          <div id="editorInputWrapper">
+            <textarea id="noteContent" rows="8" required placeholder="Viết bài bằng Markdown. Hỗ trợ công thức KaTeX nội dòng $E=mc^2$ và khối công thức đa dòng $$\int_a^b f(x)dx$$..." class="w-full p-3 font-mono rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500 leading-relaxed"></textarea>
+          </div>
+
+          <div id="editorPreviewWrapper" class="hidden p-4 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 min-h-[200px] max-h-[300px] overflow-y-auto reader-prose">
+            <!-- Dynamic Markdown preview -->
+          </div>
+        </div>
+
+        <!-- BibTeX (Optional, for research) -->
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">BibTeX Trích dẫn (Tùy chọn cho bài báo khoa học)</label>
+          <textarea id="noteBibtex" rows="2" placeholder="@article{nguyen2026quantum, ...}" class="w-full p-2.5 font-mono text-[11px] rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500"></textarea>
+        </div>
+
+        <!-- File Attachment (Image / PDF) -->
+        <div class="p-3.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 space-y-2">
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+            <i data-lucide="paperclip" class="w-4 h-4 text-emerald-600"></i>
+            <span>Đính kèm tệp đa phương tiện (Ảnh minh họa hoặc PDF bài báo)</span>
+          </label>
+          <p class="text-[11px] text-stone-500">
+            Tệp sẽ tự động được tải lên bucket <code class="font-mono text-emerald-600">garden-files</code> trên Supabase Storage hoặc lưu trữ nội bộ.
+          </p>
+          <input id="noteFileInput" type="file" accept="image/*,application/pdf" class="block w-full text-xs text-stone-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 dark:file:bg-emerald-950 dark:file:text-emerald-300 hover:file:bg-emerald-100 cursor-pointer">
+        </div>
+
+        <!-- Form Status Message -->
+        <div id="noteStatusMessage" class="hidden p-2.5 rounded-lg text-xs font-mono"></div>
+
+        <!-- Form Footer -->
+        <div class="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-stone-800">
+          <span class="text-stone-400 font-mono text-[11px]">* Bắt buộc điền</span>
+
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeNewNoteModal()" class="px-4 py-2 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+              Hủy
+            </button>
+            <button id="noteSubmitBtn" type="submit" class="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center gap-2 shadow-xs transition-colors">
+              <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+              <span>Xuất bản ghi chú</span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7B. ADMIN LOGIN MODAL                                                     -->
+  <!-- ========================================================================= -->
+  <div id="adminLoginModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="relative w-full max-w-md bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-800 overflow-hidden flex flex-col animate-in fade-in duration-150">
+      
+      <div class="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-800">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100">Đăng Nhập Quản Trị Viên</h3>
+            <p class="text-[11px] text-stone-500 font-mono">Xác thực quyền cập nhật & quản trị toàn diện</p>
+          </div>
+        </div>
+
+        <button onclick="closeLoginModal()" class="p-1 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)" class="p-6 space-y-4 text-xs">
+        <div id="loginErrorMessage" class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 font-mono text-[11px] flex items-center gap-2">
+          <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+          <span id="loginErrorText">Tên tài khoản hoặc mật khẩu không chính xác.</span>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Tài khoản / Email *</label>
+          <input id="adminUsernameInput" type="text" required placeholder="admin" class="w-full px-3 py-2 text-sm rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500 font-mono">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Mật khẩu *</label>
+          <input id="adminPasswordInput" type="password" required placeholder="admin123" class="w-full px-3 py-2 text-sm rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500 font-mono">
+        </div>
+
+        <!-- Credentials hint banner -->
+        <div class="p-3 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/60 text-[11px] text-amber-800 dark:text-amber-300 space-y-1">
+          <p class="font-semibold flex items-center gap-1.5">
+            <i data-lucide="info" class="w-3.5 h-3.5"></i>
+            <span>Thông tin đăng nhập mặc định:</span>
+          </p>
+          <p class="font-mono pl-5">Tài khoản: <strong class="text-stone-900 dark:text-white">admin</strong> · Mật khẩu: <strong class="text-stone-900 dark:text-white">admin123</strong></p>
+          <button type="button" onclick="fillDefaultAdminCredentials()" class="pl-5 text-emerald-700 dark:text-emerald-400 underline hover:font-bold">
+            Bấm vào đây để điền tự động
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button type="button" onclick="closeLoginModal()" class="px-4 py-2 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+            Hủy
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold flex items-center gap-1.5 transition-colors shadow-xs">
+            <i data-lucide="log-in" class="w-4 h-4"></i>
+            <span>Xác nhận Đăng nhập</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7C. EDIT POST MODAL (FOR ADMIN)                                           -->
+  <!-- ========================================================================= -->
+  <div id="editPostModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 dark:bg-black/80 backdrop-blur-xs flex items-start justify-center p-3 sm:p-6 sm:py-10">
+    <div class="relative w-full max-w-3xl bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-800 overflow-hidden my-auto flex flex-col">
+      
+      <div class="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-800">
+        <div class="flex items-center gap-2">
+          <div class="p-1.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <i data-lucide="edit-3" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100">Chỉnh Sửa Bài Viết</h3>
+            <p class="text-xs text-stone-500 font-mono">Cập nhật nội dung, công thức KaTeX & tệp đính kèm</p>
+          </div>
+        </div>
+
+        <button onclick="closeEditPostModal()" class="p-1 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="editPostForm" onsubmit="handleUpdatePost(event)" class="p-6 space-y-4 overflow-y-auto max-h-[80vh] text-xs">
+        <input type="hidden" id="editPostId">
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Tiêu đề bài viết *</label>
+          <input id="editPostTitle" type="text" required class="w-full px-3 py-2 text-sm rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Chủ đề phân loại *</label>
+            <select id="editPostCategory" class="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500">
+              <option value="research">🔬 Khoa học (research)</option>
+              <option value="ideas">💡 Ý tưởng (ideas)</option>
+              <option value="stories">📖 Truyện (stories)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Chu kỳ phát triển *</label>
+            <select id="editPostGrowthStage" class="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500">
+              <option value="seedling">🌱 Seedling (Hạt mầm sơ khởi)</option>
+              <option value="budding">🌿 Budding (Chồi non phát triển)</option>
+              <option value="evergreen">🌲 Evergreen (Bền vững thường xanh)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Thẻ phân loại (cách nhau bằng dấu phẩy)</label>
+          <input id="editPostTags" type="text" class="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500 font-mono">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Nội dung tóm tắt</label>
+          <textarea id="editPostSummary" rows="2" class="w-full p-2.5 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500 resize-none"></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="font-semibold text-stone-800 dark:text-stone-200">Nội dung bài viết (Markdown & KaTeX) *</label>
+            <div class="flex items-center gap-1 font-mono text-[11px] p-0.5 bg-stone-200/60 dark:bg-stone-800 rounded">
+              <button type="button" id="editTabEditBtn" onclick="switchEditEditorTab('edit')" class="px-2 py-0.5 rounded bg-white dark:bg-stone-700 font-semibold shadow-2xs">Soạn thảo</button>
+              <button type="button" id="editTabPreviewBtn" onclick="switchEditEditorTab('preview')" class="px-2 py-0.5 rounded text-stone-500 hover:text-stone-900 dark:hover:text-stone-100">Xem trước</button>
+            </div>
+          </div>
+
+          <div id="editInputWrapper">
+            <textarea id="editPostContent" rows="8" required class="w-full p-3 font-mono rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500 leading-relaxed"></textarea>
+          </div>
+
+          <div id="editPreviewWrapper" class="hidden p-4 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 min-h-[200px] max-h-[300px] overflow-y-auto reader-prose"></div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">BibTeX Trích dẫn (Tùy chọn)</label>
+          <textarea id="editPostBibtex" rows="2" class="w-full p-2.5 font-mono text-[11px] rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-amber-500"></textarea>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 space-y-2">
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+            <i data-lucide="paperclip" class="w-4 h-4 text-emerald-600"></i>
+            <span>Tệp đính kèm (Ảnh hoặc PDF)</span>
+          </label>
+          <div id="editCurrentFileNotice" class="text-[11px] text-stone-500 font-mono"></div>
+          <input id="editFileInput" type="file" accept="image/*,application/pdf" class="block w-full text-xs text-stone-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 dark:file:bg-amber-950 dark:file:text-amber-300 hover:file:bg-amber-100 cursor-pointer">
+        </div>
+
+        <div class="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-stone-800">
+          <button type="button" onclick="closeEditPostModal()" class="px-4 py-2 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+            Hủy
+          </button>
+          <button id="editSubmitBtn" type="submit" class="px-5 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold flex items-center gap-2 shadow-xs transition-colors">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            <span>Lưu thay đổi bài viết</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7D. EDIT PROFILE MODAL (FOR ADMIN)                                        -->
+  <!-- ========================================================================= -->
+  <div id="editProfileModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="relative w-full max-w-lg bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-800 overflow-hidden flex flex-col">
+      
+      <div class="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-800">
+        <div class="flex items-center gap-2">
+          <div class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <i data-lucide="user-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100">Chỉnh Sửa Hồ Sơ Tác Giả</h3>
+            <p class="text-xs text-stone-500 font-mono">Cập nhật thông tin Người làm vườn số</p>
+          </div>
+        </div>
+
+        <button onclick="closeEditProfileModal()" class="p-1 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleUpdateProfile(event)" class="p-6 space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Họ và tên tác giả *</label>
+          <input id="editProfileName" type="text" required class="w-full px-3 py-2 text-sm rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Chức danh / Danh xưng chuyên môn *</label>
+          <input id="editProfileTitle" type="text" required class="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500 font-mono">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Tiểu sử giới thiệu (Bio) *</label>
+          <textarea id="editProfileBio" rows="3" required class="w-full p-2.5 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500 resize-none leading-relaxed"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Đường dẫn ảnh đại diện (Avatar URL)</label>
+          <input id="editProfileAvatar" type="url" placeholder="https://..." class="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500 font-mono text-[11px]">
+        </div>
+
+        <div class="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-stone-800">
+          <button type="button" onclick="closeEditProfileModal()" class="px-4 py-2 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+            Hủy
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center gap-1.5 transition-colors shadow-xs">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Lưu hồ sơ</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 8. SETTINGS & SUPABASE CLOUD SETUP MODAL                                  -->
+  <!-- ========================================================================= -->
+  <div id="settingsModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-stone-900/60 dark:bg-black/80 backdrop-blur-xs flex items-start justify-center p-3 sm:p-6 sm:py-10">
+    <div class="relative w-full max-w-2xl bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-800 overflow-hidden my-auto flex flex-col">
+      
+      <div class="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-800">
+        <div class="flex items-center gap-2">
+          <div class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <i data-lucide="database" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100">Cấu hình Backend & Supabase Cloud</h3>
+            <p class="text-xs text-stone-500 font-mono">Chế độ Hybrid Data: Demo Offline ↔ Real Postgres</p>
+          </div>
+        </div>
+
+        <button onclick="closeSettingsModal()" class="p-1 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6 overflow-y-auto max-h-[80vh] text-xs">
+        
+        <!-- Supabase Credentials Form -->
+        <div class="space-y-3">
+          <h4 class="font-semibold text-sm text-stone-800 dark:text-stone-200">1. Thông tin kết nối Supabase</h4>
+          <p class="text-stone-500 leading-relaxed">
+            Nhập Project URL và Anon Key từ Supabase Dashboard (Settings $\rightarrow$ API). Hệ thống sẽ tự động lưu vào <code class="font-mono">localStorage</code> và đồng bộ dữ liệu thời gian thực.
+          </p>
+
+          <div class="space-y-2">
+            <div>
+              <label class="block font-mono text-[11px] text-stone-600 dark:text-stone-400 mb-1">SUPABASE_URL</label>
+              <input id="supabaseUrlInput" type="url" placeholder="https://xyzcompany.supabase.co" class="w-full px-3 py-2 font-mono rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+            </div>
+
+            <div>
+              <label class="block font-mono text-[11px] text-stone-600 dark:text-stone-400 mb-1">SUPABASE_ANON_KEY</label>
+              <input id="supabaseKeyInput" type="password" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="w-full px-3 py-2 font-mono rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 focus:outline-hidden focus:border-emerald-500">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <button onclick="saveSupabaseSettings()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center gap-1.5 transition-colors">
+              <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              <span>Lưu & Kết nối Cloud</span>
+            </button>
+            <button onclick="testSupabaseConnection()" class="px-3.5 py-2 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-medium transition-colors">
+              Kiểm tra kết nối
+            </button>
+            <button onclick="clearSupabaseSettings()" class="px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 ml-auto transition-colors">
+              Ngắt kết nối
+            </button>
+          </div>
+          <div id="settingsConnectionResult" class="hidden p-2 rounded-lg font-mono text-[11px]"></div>
+        </div>
+
+        <!-- SQL Schema Migration Guide -->
+        <div class="space-y-3 pt-4 border-t border-stone-200 dark:border-stone-800">
+          <div class="flex items-center justify-between">
+            <h4 class="font-semibold text-sm text-stone-800 dark:text-stone-200">2. Kịch bản SQL Migration (Database Schema & RLS)</h4>
+            <button onclick="copySqlMigration()" class="flex items-center gap-1 px-2.5 py-1 rounded bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-mono text-[11px]">
+              <i data-lucide="copy" class="w-3 h-3"></i>
+              <span id="copySqlText">Sao chép SQL</span>
+            </button>
+          </div>
+          <p class="text-stone-500 leading-relaxed">
+            Mở mục <strong>SQL Editor</strong> trên Supabase Dashboard và dán toàn bộ đoạn mã bên dưới để khởi tạo 2 bảng <code class="font-mono">posts</code>, <code class="font-mono">comments</code> cùng Storage bucket <code class="font-mono">garden-files</code>:
+          </p>
+
+          <pre class="p-3.5 rounded-xl bg-stone-950 text-stone-300 font-mono text-[11px] leading-relaxed overflow-x-auto max-h-56 scrollbar-thin"><code id="sqlMigrationCode">-- 1. Bảng Bài viết & Ý tưởng (posts)
+CREATE TABLE IF NOT EXISTS posts (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  category TEXT NOT NULL CHECK (category IN ('research', 'ideas', 'stories')),
+  growth_stage TEXT DEFAULT 'seedling' CHECK (growth_stage IN ('seedling', 'budding', 'evergreen')),
+  tags TEXT[] DEFAULT '{}',
+  summary TEXT,
+  content TEXT NOT NULL,
+  bibtex TEXT,
+  file_url TEXT,
+  claps_count INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 2. Bảng Bình luận (comments)
+CREATE TABLE IF NOT EXISTS comments (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
+  author_name TEXT NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 3. Tạo Storage Bucket lưu tệp
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('garden-files', 'garden-files', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- 4. Kích hoạt Row Level Security (RLS)
+ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public Read Posts" ON posts FOR SELECT USING (true);
+CREATE POLICY "Public Read Comments" ON comments FOR SELECT USING (true);
+CREATE POLICY "Public Insert Comments" ON comments FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public Update Claps" ON posts FOR UPDATE USING (true) WITH CHECK (true);
+CREATE POLICY "Public Insert Posts" ON posts FOR INSERT WITH CHECK (true);
+
+-- Storage Policies
+CREATE POLICY "Public Access Bucket" ON storage.objects FOR SELECT USING (bucket_id = 'garden-files');
+CREATE POLICY "Public Upload Bucket" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'garden-files');</code></pre>
+        </div>
+
+        <!-- Reset Demo Data -->
+        <div class="pt-4 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+          <div>
+            <p class="font-semibold text-stone-800 dark:text-stone-200">Khôi phục Dữ liệu Mẫu (Demo Mock Data)</p>
+            <p class="text-stone-500">Nạp lại 4 bài viết mẫu về Toán học KaTeX, Ý tưởng phần mềm và Truyện.</p>
+          </div>
+          <button onclick="resetToInitialMockData()" class="px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+            Nạp lại mẫu
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 9. JAVASCRIPT LOGIC & SUPABASE FULL-STACK INTEGRATION                     -->
+  <!-- ========================================================================= -->
+  <script>
+    // ==========================================
+    // INITIAL MOCK DATA (4 MỤC BẮT BUỘC)
+    // ==========================================
+    const INITIAL_POSTS = [
+      {
+        id: "post-1-qgnn-research",
+        title: "Nghiên cứu về Mạng Neural Đồ thị Lượng tử (QGNN) và Tối ưu hóa Hamilton",
+        category: "research",
+        growth_stage: "evergreen",
+        tags: ["Quantum Computing", "Deep Learning", "Mathematics", "Hamiltonian"],
+        summary: "Phát triển cấu trúc mạng lượng tử biến phân lai (PQC) trên không gian Hilbert giải bài toán NP-hard đồ thị với quy tắc đạo hàm Parameter-shift rule.",
+        content: `### 1. Đặt vấn đề và Không gian Hilbert
+
+Bài toán tối ưu tổ hợp rời rạc trên đồ thị $G = (V, E)$ đối mặt với rào cản độ phức tạp tăng theo hàm mũ $\\mathcal{O}(2^{|V|})$ trên máy tính cổ điển. Chúng tôi đề xuất mô hình lai lượng tử - cổ điển **Quantum Graph Neural Network (QGNN)**.
+
+Mỗi đỉnh $v_i \\in V$ được nhúng vào một qubit trong không gian Hilbert $\\mathcal{H}^{\\otimes n}$. Trạng thái lượng tử biến phân chuẩn hoá có dạng:
+
+$$|\\psi(\\boldsymbol{\\theta})\\rangle = \\prod_{l=1}^{L} U_l(\\boldsymbol{\\theta}_l) |0\\rangle^{\\otimes n}$$
+
+Trong đó, toán tử tiến hoá $U_l(\\boldsymbol{\\theta}_l)$ biểu diễn tương tác Ising giữa các nút kề nhau trên đồ thị:
+
+$$U_l(\\boldsymbol{\\theta}_l) = \\exp\\left(-i \\sum_{(j, k) \\in E} J_{jk} Z_j Z_k - i \\sum_{j \\in V} h_j X_j\\right)$$
+
+với $Z_j, X_j$ lần lượt là các ma trận spin Pauli-Z và Pauli-X.
+
+### 2. Hàm Mục tiêu Hamilton và Đạo hàm Lượng tử
+
+Hàm mất mát là giá trị kỳ vọng của toán tử Hamilton bài toán $\\hat{H}_C$:
+
+$$\\mathcal{L}(\\boldsymbol{\\theta}) = \\langle \\psi(\\boldsymbol{\\theta}) | \\hat{H}_C | \\psi(\\boldsymbol{\\theta}) \\rangle = \\text{Tr}\\left(\\hat{H}_C \\rho(\\boldsymbol{\\theta})\\right)$$
+
+Ma trận mật độ tương tác có thể biểu diễn qua hệ ma trận khối vi phân:
+
+$$\\mathbf{H} = \\begin{pmatrix} \\alpha & \\beta & 0 \\\\ \\beta^* & \\gamma & \\delta \\\\ 0 & \\delta^* & \\omega \\end{pmatrix}$$
+
+Áp dụng quy tắc dịch chuyển tham số lượng tử (*Parameter-shift rule*), gradient được tính chính xác không cần vi sai số trị:
+
+$$\\frac{\\partial \\mathcal{L}}{\\partial \\theta_k} = \\frac{\\mathcal{L}\\left(\\theta_k + \\frac{\\pi}{2}\\right) - \\mathcal{L}\\left(\\theta_k - \\frac{\\pi}{2}\\right)}{2}$$
+
+### 3. Kết quả Thực nghiệm
+
+Thuật toán đạt tỷ lệ xấp xỉ nghiệm tối ưu **98.4%** trên đồ thị ngẫu nhiên Erdős–Rényi với 32 đỉnh, vượt trội hơn Simulated Annealing cổ điển 14.2% về thời gian hội tụ.`,
+        bibtex: `@article{nguyen2026quantum,
+  title={Quantum Graph Neural Networks in Combinatorial Optimization},
+  author={Nguyen, Minh Khang and Collaborators},
+  journal={Journal of Quantum Information and Machine Learning},
+  volume={14},
+  pages={104--118},
+  year={2026}
+}`,
+        file_url: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1200&q=80",
+        claps_count: 42,
+        created_at: new Date(Date.now() - 3 * 86400000).toISOString()
+      },
+      {
+        id: "post-2-synapse-engine",
+        title: "Synapse Engine: Công cụ suy luận Edge AI với Rust và WebGPU",
+        category: "ideas",
+        growth_stage: "budding",
+        tags: ["Rust", "WebGPU", "Inference", "Edge AI", "Wasm"],
+        summary: "Ý tưởng kiến trúc phần mềm chạy các mô hình ngôn ngữ và thị giác trực tiếp trong trình duyệt người dùng với shader FlashAttention tối ưu.",
+        content: `### Tầm nhìn Edge-First AI
+
+Đưa AI trở về thiết bị người dùng cuối (Local First). Thay vì phụ thuộc vào các API đám mây tập trung, **Synapse Engine** sử dụng WebGPU và Rust (thông qua WebAssembly) để tận dụng chip Apple Silicon và card GPU rời ngay trong Chrome/Safari.
+
+### Thuật toán Ma trận FlashAttention
+
+Cốt lõi tính toán chú ý song song sử dụng kỹ thuật tiled matrix multiplication:
+
+$$\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}} + M\\right)V$$
+
+\`\`\`rust
+pub struct TensorPipeline {
+    device: wgpu::Device,
+    queue: wgpu::Queue,
+    compute_pipeline: wgpu::ComputePipeline,
+}
+
+impl TensorPipeline {
+    pub async fn forward_matmul(&self, input: &Tensor) -> Result<Tensor, InferenceError> {
+        self.dispatch_shader_grid(input.dims()).await
+    }
+}
+\`\`\`
+
+- Hỗ trợ lượng tử hóa \`INT4\` và \`FP8\` với bộ nhớ không rác (Zero-copy).
+- Đạt 48 tokens/giây trên chip Apple M3 Max đối với mô hình 7B tham số.`,
+        bibtex: null,
+        file_url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+        claps_count: 28,
+        created_at: new Date(Date.now() - 7 * 86400000).toISOString()
+      },
+      {
+        id: "post-3-aetheria-game",
+        title: "Sử Thi Aetheria: Ý tưởng Game Nhập vai Sinh thái và Vòng lặp Thời gian 300 năm",
+        category: "ideas",
+        growth_stage: "seedling",
+        tags: ["Game Design", "Worldbuilding", "RPG", "Ecology"],
+        summary: "Thiết kế cơ chế game phiêu lưu thế giới mở nơi mọi tương tác thực vật học sẽ định hình khí hậu và địa hình thế giới qua 3 chu kỳ thế kỷ.",
+        content: `### Triết lý Thiết kế
+
+*Sử Thi Aetheria* tôn vinh cảm giác thám hiểm tự do và sự tương hỗ sinh thái lấy cảm hứng từ *Outer Wilds* và *Studio Ghibli*. Người chơi không dùng vũ khí đao kiếm mà sử dụng **Gậy Gieo Mầm (Spore Staff)**.
+
+### Phương trình Cân bằng Sinh thái
+
+Biến thiên năng lượng sinh thái $E(t)$ theo thời gian tuân theo phương trình vi phân:
+
+$$\\frac{dE}{dt} = \\alpha P(t) - \\beta C(t) \\pm \\gamma \\Delta_{\\text{Player}}$$
+
+- **3 Điểm mốc thời gian chuyển dịch:**
+  1. *Thời Cổ sơ (Năm 0)*: Thiên nhiên trù phú, di tích cổ xưa nguyên vẹn.
+  2. *Kỷ Băng giá (Năm 150)*: Mất cân bằng nhiệt độ, các dòng sông hóa đá mở ra hầm ngục băng.
+  3. *Kỷ Tái sinh (Năm 300)*: Hậu quả hoặc phần thưởng từ mọi mầm cây bạn gieo ở 300 năm trước.`,
+        bibtex: null,
+        file_url: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
+        claps_count: 19,
+        created_at: new Date(Date.now() - 14 * 86400000).toISOString()
+      },
+      {
+        id: "post-4-novel-chapter",
+        title: "Chương 1: Tiếng Vọng Dưới Tán Cây Thế Giới",
+        category: "stories",
+        growth_stage: "evergreen",
+        tags: ["Fiction", "Fantasy", "Novel", "World Tree"],
+        summary: "Chương mở đầu của tiểu thuyết dài kỳ: Khi những chiếc lá bạc rơi xuống vào đêm trăng tròn, dòng nhựa cây thì thầm những ký ức bị lãng quên của nền văn minh cổ đại.",
+        content: `Đêm nay, sương mù từ thung lũng dâng lên bao phủ lấy những gốc rễ khổng lồ của Cây Thế Giới. Vỏ cây màu tro xám lấp lánh những đường vân huỳnh quang màu ngọc bích, nhịp đập của nó chậm rãi như hơi thở của một vị thần đang ngủ say.
+
+Kael ngồi trên gờ đá cheo leo, tay mân mê viên đá ngưng kết hạt phấn hoa. Gió lạnh từ phương Bắc mang theo mùi thông ướt át và tiếng rì rào của đại dương phía xa.
+
+> "Nếu cây nhớ được mười vạn năm lịch sử, thì nỗi đau của con người chỉ như một vết kim châm trên lớp vỏ sần sùi."
+
+Cậu thì thầm với màn đêm, mắt dõi theo luồng ánh sáng le lói đang tiến lại từ bìa rừng. Đó là chiếc đèn lồng làm từ kén tằm phát quang của Hội Kẻ Gác Đêm. Một cuộc hành trình mới sắp sửa bắt đầu...`,
+        bibtex: null,
+        file_url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
+        claps_count: 35,
+        created_at: new Date(Date.now() - 20 * 86400000).toISOString()
+      }
+    ];
+
+    const INITIAL_COMMENTS = [
+      {
+        id: "comm-1",
+        post_id: "post-1-qgnn-research",
+        author_name: "TS. Trần Hoàng Nam",
+        content: "Công thức biến phân PQC và quy tắc Parameter-shift rule giải thích rất tường minh! Bạn có định thử nghiệm thêm trên phần cứng IBM Quantum Eagle thật không?",
+        created_at: new Date(Date.now() - 2 * 86400000).toISOString()
+      },
+      {
+        id: "comm-2",
+        post_id: "post-2-synapse-engine",
+        author_name: "Lê Bảo Anh (Rustacean)",
+        content: "Shader WGSL FlashAttention chạy trên WebGPU cực kỳ mượt mà. Đã tặng bạn 1 star trên GitHub repo!",
+        created_at: new Date(Date.now() - 5 * 86400000).toISOString()
+      },
+      {
+        id: "comm-3",
+        post_id: "post-4-novel-chapter",
+        author_name: "Mai Phương Chi",
+        content: "Văn phong gợi mở và giàu chất thơ quá. Rất mong chờ chương tiếp theo về Hội Kẻ Gác Đêm!",
+        created_at: new Date(Date.now() - 10 * 86400000).toISOString()
+      }
+    ];
+
+    // ==========================================
+    // APPLICATION STATE
+    // ==========================================
+    let supabaseClient = null;
+    let isCloudConnected = false;
+    let posts = [];
+    let comments = [];
+
+    // User Roles: 'guest' | 'admin'
+    let currentUserRole = localStorage.getItem('garden_user_role') || 'guest';
+    let authorProfile = {
+      name: "Nguyễn Minh Khang (Alex Nguyen)",
+      title: "Senior AI Researcher & Full-Stack Architect",
+      bio: "Chào mừng bạn đến với khu vườn tri thức số. Nơi đây nuôi dưỡng các nghiên cứu toán học & AI vi phân, ươm mầm các dự án phần mềm mã nguồn mở và lưu giữ những chương hồi tiểu thuyết sáng tác. Tích hợp Markdown, KaTeX, Cloud Database PostgreSQL (Supabase) và Netlify.",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
+    };
+
+    // Filters
+    let currentCategory = 'all';
+    let currentStage = 'all';
+    let currentSearch = '';
+    let currentTag = null;
+
+    // Active Reader Post
+    let activeReaderPostId = null;
+    let readerFontSizeLevel = 1; // 0: sm, 1: base, 2: lg, 3: xl
+    let readerFontFamily = 'sans'; // 'sans' | 'serif'
+
+    // ==========================================
+    // INITIALIZATION (initApp)
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      initApp();
+    });
+
+    async function initApp() {
+      // 1. Theme setup
+      initTheme();
+
+      // 2. Load custom profile from storage
+      loadProfile();
+
+      // 3. Initialize Supabase if credentials exist in localStorage
+      initSupabaseClient();
+
+      // 4. Update Role UI
+      updateRoleUI();
+
+      // 5. Load posts and comments
+      await fetchPosts();
+
+      // 6. Update UI stats
+      updateGlobalStats();
+
+      // 7. Initialize Lucide icons
+      lucide.createIcons();
+
+      // 8. Global keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeReader();
+          closeNewNoteModal();
+          closeLoginModal();
+          closeEditPostModal();
+          closeEditProfileModal();
+          closeSettingsModal();
+        }
+      });
+    }
+
+    // ==========================================
+    // USER ROLE MANAGEMENT (ADMIN VS KHÁCH)
+    // ==========================================
+    function isAdmin() {
+      return currentUserRole === 'admin';
+    }
+
+    function updateRoleUI() {
+      const roleBadge = document.getElementById('userRoleBadge');
+      const roleIcon = document.getElementById('userRoleIcon');
+      const roleText = document.getElementById('userRoleText');
+      const newNoteBtn = document.getElementById('adminNewNoteBtn');
+      const loginBtn = document.getElementById('loginAdminBtn');
+      const logoutBtn = document.getElementById('logoutAdminBtn');
+      const editProfileBtn = document.getElementById('adminEditProfileBtn');
+      const adminReaderActions = document.getElementById('adminReaderActions');
+
+      if (isAdmin()) {
+        roleBadge.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border transition-colors bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30 shadow-2xs";
+        roleIcon.textContent = "👑";
+        roleText.textContent = "Admin";
+
+        if (newNoteBtn) { newNoteBtn.classList.remove('hidden'); newNoteBtn.classList.add('flex'); }
+        if (loginBtn) { loginBtn.classList.add('hidden'); loginBtn.classList.remove('flex'); }
+        if (logoutBtn) { logoutBtn.classList.remove('hidden'); logoutBtn.classList.add('flex'); }
+        if (editProfileBtn) { editProfileBtn.classList.remove('hidden'); editProfileBtn.classList.add('inline-flex'); }
+        if (adminReaderActions) { adminReaderActions.classList.remove('hidden'); adminReaderActions.classList.add('flex'); }
+      } else {
+        roleBadge.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border transition-colors bg-stone-100 dark:bg-stone-900 text-stone-600 dark:text-stone-300 border-stone-200 dark:border-stone-800 shadow-2xs";
+        roleIcon.textContent = "👤";
+        roleText.textContent = "Khách";
+
+        if (newNoteBtn) { newNoteBtn.classList.add('hidden'); newNoteBtn.classList.remove('flex'); }
+        if (loginBtn) { loginBtn.classList.remove('hidden'); loginBtn.classList.add('flex'); }
+        if (logoutBtn) { logoutBtn.classList.add('hidden'); logoutBtn.classList.remove('flex'); }
+        if (editProfileBtn) { editProfileBtn.classList.add('hidden'); editProfileBtn.classList.remove('inline-flex'); }
+        if (adminReaderActions) { adminReaderActions.classList.add('hidden'); adminReaderActions.classList.remove('flex'); }
+      }
+
+      lucide.createIcons();
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginErrorMessage').classList.add('hidden');
+      document.getElementById('adminLoginForm').reset();
+      document.getElementById('adminLoginModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => document.getElementById('adminUsernameInput').focus(), 50);
+      lucide.createIcons();
+    }
+
+    function closeLoginModal() {
+      document.getElementById('adminLoginModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function fillDefaultAdminCredentials() {
+      document.getElementById('adminUsernameInput').value = 'admin';
+      document.getElementById('adminPasswordInput').value = 'admin123';
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('adminUsernameInput').value.trim();
+      const pass = document.getElementById('adminPasswordInput').value.trim();
+      const errorBox = document.getElementById('loginErrorMessage');
+      const errorText = document.getElementById('loginErrorText');
+
+      const validPass = localStorage.getItem('garden_admin_pass') || 'admin123';
+
+      if ((user === 'admin' || user === 'alex@example.com') && pass === validPass) {
+        currentUserRole = 'admin';
+        localStorage.setItem('garden_user_role', 'admin');
+        closeLoginModal();
+        updateRoleUI();
+        renderPosts();
+        if (activeReaderPostId) openReader(activeReaderPostId);
+      } else {
+        errorBox.classList.remove('hidden');
+        errorText.textContent = 'Sai tài khoản hoặc mật khẩu. Mặc định là: admin / admin123';
+      }
+    }
+
+    function handleAdminLogout() {
+      if (confirm('Đăng xuất khỏi quyền Admin và trở lại chế độ Khách?')) {
+        currentUserRole = 'guest';
+        localStorage.setItem('garden_user_role', 'guest');
+        updateRoleUI();
+        renderPosts();
+        if (activeReaderPostId) openReader(activeReaderPostId);
+      }
+    }
+
+    // ==========================================
+    // PROFILE MANAGEMENT (load & update)
+    // ==========================================
+    function loadProfile() {
+      const stored = localStorage.getItem('garden_profile');
+      if (stored) {
+        try {
+          authorProfile = { ...authorProfile, ...JSON.parse(stored) };
+        } catch (e) {}
+      }
+      applyProfileToUI();
+    }
+
+    function applyProfileToUI() {
+      const nameEl = document.getElementById('profileNameText');
+      const titleEl = document.getElementById('profileTitleText');
+      const bioEl = document.getElementById('profileBioText');
+      const avatarEl = document.getElementById('profileAvatarImg');
+
+      if (nameEl) nameEl.textContent = authorProfile.name;
+      if (titleEl) titleEl.textContent = authorProfile.title;
+      if (bioEl) bioEl.textContent = authorProfile.bio;
+      if (avatarEl && authorProfile.avatar) avatarEl.src = authorProfile.avatar;
+    }
+
+    function openEditProfileModal() {
+      if (!isAdmin()) {
+        openLoginModal();
+        return;
+      }
+      document.getElementById('editProfileName').value = authorProfile.name;
+      document.getElementById('editProfileTitle').value = authorProfile.title;
+      document.getElementById('editProfileBio').value = authorProfile.bio;
+      document.getElementById('editProfileAvatar').value = authorProfile.avatar || '';
+      document.getElementById('editProfileModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById('editProfileModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function handleUpdateProfile(e) {
+      e.preventDefault();
+      if (!isAdmin()) return;
+
+      authorProfile.name = document.getElementById('editProfileName').value.trim();
+      authorProfile.title = document.getElementById('editProfileTitle').value.trim();
+      authorProfile.bio = document.getElementById('editProfileBio').value.trim();
+      authorProfile.avatar = document.getElementById('editProfileAvatar').value.trim() || authorProfile.avatar;
+
+      localStorage.setItem('garden_profile', JSON.stringify(authorProfile));
+      applyProfileToUI();
+      closeEditProfileModal();
+    }
+
+    // ==========================================
+    // THEME MANAGEMENT
+    // ==========================================
+    function initTheme() {
+      const savedTheme = localStorage.getItem('garden_theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('themeIcon').setAttribute('data-lucide', 'sun');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('themeIcon').setAttribute('data-lucide', 'moon');
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('garden_theme', isDark ? 'dark' : 'light');
+      document.getElementById('themeIcon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // SUPABASE INTEGRATION (getSupabaseClient)
+    // ==========================================
+    function initSupabaseClient() {
+      const url = localStorage.getItem('garden_supabase_url');
+      const key = localStorage.getItem('garden_supabase_key');
+
+      if (url && key && window.supabase) {
+        try {
+          supabaseClient = window.supabase.createClient(url.trim(), key.trim());
+          isCloudConnected = true;
+          updateCloudStatusBadge(true, "Cloud Connected");
+          return;
+        } catch (e) {
+          console.warn("Lỗi khởi tạo Supabase client:", e);
+        }
+      }
+
+      // Default demo mode
+      supabaseClient = null;
+      isCloudConnected = false;
+      updateCloudStatusBadge(false, "Demo Mode");
+    }
+
+    function updateCloudStatusBadge(connected, text) {
+      const dot = document.getElementById('cloudStatusDot');
+      const label = document.getElementById('cloudStatusText');
+      if (connected) {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-500";
+        label.textContent = text;
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+        label.textContent = text;
+      }
+    }
+
+    // ==========================================
+    // DATA FETCHING (fetchPosts)
+    // ==========================================
+    async function fetchPosts() {
+      if (isCloudConnected && supabaseClient) {
+        try {
+          const { data: dbPosts, error: postErr } = await supabaseClient
+            .from('posts')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          const { data: dbComments, error: commErr } = await supabaseClient
+            .from('comments')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (!postErr && dbPosts && dbPosts.length > 0) {
+            posts = dbPosts;
+          } else {
+            posts = getLocalPosts();
+          }
+
+          if (!commErr && dbComments) {
+            comments = dbComments;
+          } else {
+            comments = getLocalComments();
+          }
+        } catch (err) {
+          console.warn("Lỗi fetch Supabase, sử dụng localStorage:", err);
+          posts = getLocalPosts();
+          comments = getLocalComments();
+        }
+      } else {
+        // Local Demo Mode
+        posts = getLocalPosts();
+        comments = getLocalComments();
+      }
+
+      renderPosts();
+      renderTagCloud();
+      updateGlobalStats();
+    }
+
+    function getLocalPosts() {
+      const stored = localStorage.getItem('garden_mock_posts');
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      localStorage.setItem('garden_mock_posts', JSON.stringify(INITIAL_POSTS));
+      return [...INITIAL_POSTS];
+    }
+
+    function getLocalComments() {
+      const stored = localStorage.getItem('garden_mock_comments');
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      localStorage.setItem('garden_mock_comments', JSON.stringify(INITIAL_COMMENTS));
+      return [...INITIAL_COMMENTS];
+    }
+
+    // ==========================================
+    // RENDER POSTS LIST
+    // ==========================================
+    function renderPosts() {
+      const container = document.getElementById('postsList');
+      const emptyState = document.getElementById('emptyState');
+      const countIndicator = document.getElementById('postCountIndicator');
+
+      // Filter
+      let filtered = posts.filter(post => {
+        // Category filter
+        if (currentCategory !== 'all' && post.category !== currentCategory) return false;
+        // Growth stage filter
+        if (currentStage !== 'all' && post.growth_stage !== currentStage) return false;
+        // Tag filter
+        if (currentTag && (!post.tags || !post.tags.includes(currentTag))) return false;
+        // Search filter
+        if (currentSearch.trim()) {
+          const q = currentSearch.toLowerCase().trim();
+          const matchTitle = (post.title || '').toLowerCase().includes(q);
+          const matchSummary = (post.summary || '').toLowerCase().includes(q);
+          const matchContent = (post.content || '').toLowerCase().includes(q);
+          const matchTags = (post.tags || []).some(t => t.toLowerCase().includes(q));
+          if (!matchTitle && !matchSummary && !matchContent && !matchTags) return false;
+        }
+        return true;
+      });
+
+      // Sort newest first
+      filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+      countIndicator.textContent = `Hiển thị ${filtered.length} / ${posts.length} bài viết`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      container.innerHTML = filtered.map(post => {
+        const stageMap = {
+          seedling: { icon: '🌱', label: 'Seedling' },
+          budding: { icon: '🌿', label: 'Budding' },
+          evergreen: { icon: '🌲', label: 'Evergreen' }
+        };
+        const stage = stageMap[post.growth_stage] || stageMap.seedling;
+        const postComments = comments.filter(c => c.post_id === post.id);
+        const dateStr = new Date(post.created_at).toLocaleDateString('vi-VN', { year: 'numeric', month: 'short', day: 'numeric' });
+
+        return `
+          <article onclick="openReader('${post.id}')" class="group relative flex flex-col sm:flex-row gap-5 p-5 rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-white/70 dark:bg-stone-900/50 hover:bg-white dark:hover:bg-stone-900 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-all duration-200 cursor-pointer shadow-2xs hover:shadow-md">
+            
+            ${post.file_url ? `
+              <div class="sm:w-48 h-36 sm:h-auto shrink-0 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 border border-stone-200/60 dark:border-stone-800">
+                <img src="${post.file_url}" alt="${escapeHtml(post.title)}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              </div>
+            ` : ''}
+
+            <div class="flex-1 flex flex-col justify-between space-y-2 min-w-0">
+              <div class="space-y-1.5">
+                <!-- Meta row (Zero-pill text style) -->
+                <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-mono text-stone-500">
+                  <span class="flex items-center gap-1 text-stone-700 dark:text-stone-300 font-medium">
+                    <span>${stage.icon}</span>
+                    <span>${stage.label}</span>
+                  </span>
+                  <span>·</span>
+                  <span class="uppercase text-emerald-700 dark:text-emerald-400 font-semibold">${post.category}</span>
+                  <span>·</span>
+                  <time>${dateStr}</time>
+                </div>
+
+                <!-- Title -->
+                <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 dark:text-stone-100 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors leading-snug">
+                  ${escapeHtml(post.title)}
+                </h3>
+
+                <!-- Summary -->
+                <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                  ${escapeHtml(post.summary || '')}
+                </p>
+              </div>
+
+              <!-- Footer row: Tags & Interactions -->
+              <div class="pt-2 border-t border-stone-100 dark:border-stone-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <!-- Tags -->
+                <div class="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-stone-500">
+                  ${(post.tags || []).map(tag => `
+                    <span onclick="event.stopPropagation(); setTagFilter('${escapeHtml(tag)}');" class="hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer">#${escapeHtml(tag)}</span>
+                  `).join('')}
+                </div>
+
+                <!-- Metrics (Claps & Comments) -->
+                <div class="flex items-center gap-3 text-stone-400 font-mono text-[11px]">
+                  <button onclick="event.stopPropagation(); toggleClap('${post.id}', event);" class="flex items-center gap-1 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Vỗ tay cổ vũ">
+                    <span>👏</span>
+                    <span id="card-clap-${post.id}">${post.claps_count || 0}</span>
+                  </button>
+
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                    <span>${postComments.length}</span>
+                  </span>
+
+                  ${isAdmin() ? `
+                    <div class="flex items-center gap-1 pl-2 border-l border-stone-200 dark:border-stone-700">
+                      <button onclick="event.stopPropagation(); openEditPostModal('${post.id}');" class="p-1 rounded text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40" title="Chỉnh sửa bài viết (Admin)">
+                        <i data-lucide="edit" class="w-3.5 h-3.5"></i>
+                      </button>
+                      <button onclick="event.stopPropagation(); deletePost('${post.id}');" class="p-1 rounded text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40" title="Xóa bài viết (Admin)">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                      </button>
+                    </div>
+                  ` : ''}
+
+                  <i data-lucide="arrow-up-right" class="w-4 h-4 text-stone-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                </div>
+              </div>
+
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // RENDER TAG CLOUD
+    // ==========================================
+    function renderTagCloud() {
+      const container = document.getElementById('tagCloudContainer');
+      const tagCounts = {};
+
+      posts.forEach(p => {
+        (p.tags || []).forEach(t => {
+          tagCounts[t] = (tagCounts[t] || 0) + 1;
+        });
+      });
+
+      const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
+
+      container.innerHTML = `
+        <span class="text-stone-400">Thẻ phổ biến:</span>
+        ${sortedTags.map(tag => {
+          const isSelected = currentTag === tag;
+          return `
+            <button onclick="setTagFilter('${escapeHtml(tag)}')" class="px-2 py-0.5 rounded transition-colors ${isSelected ? 'bg-emerald-600 text-white font-semibold' : 'hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-400'}">
+              #${escapeHtml(tag)} <span class="opacity-60 text-[10px]">(${tagCounts[tag]})</span>
+            </button>
+          `;
+        }).join('')}
+      `;
+    }
+
+    // ==========================================
+    // FILTER CONTROLS
+    // ==========================================
+    function setCategoryFilter(cat) {
+      currentCategory = cat;
+      ['All', 'Research', 'Ideas', 'Stories'].forEach(c => {
+        const btn = document.getElementById(`catTab${c}`);
+        if (btn) {
+          if (c.toLowerCase() === cat) {
+            btn.className = "px-3 py-1.5 rounded-lg transition-colors bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-2xs font-semibold";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-lg transition-colors text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100";
+          }
+        }
+      });
+      checkActiveFilters();
+      renderPosts();
+    }
+
+    function setStageFilter(stage) {
+      currentStage = stage;
+      ['All', 'Seedling', 'Budding', 'Evergreen'].forEach(s => {
+        const btn = document.getElementById(`stageBtn${s}`);
+        if (btn) {
+          if (s.toLowerCase() === stage) {
+            btn.className = "px-2 py-0.5 rounded text-emerald-700 dark:text-emerald-400 font-semibold bg-emerald-500/10";
+          } else {
+            btn.className = "px-2 py-0.5 rounded hover:bg-stone-100 dark:hover:bg-stone-900";
+          }
+        }
+      });
+      checkActiveFilters();
+      renderPosts();
+    }
+
+    function setTagFilter(tag) {
+      currentTag = (currentTag === tag) ? null : tag;
+      checkActiveFilters();
+      renderTagCloud();
+      renderPosts();
+    }
+
+    function onSearchChange(val) {
+      currentSearch = val;
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (val.trim()) clearBtn.classList.remove('hidden');
+      else clearBtn.classList.add('hidden');
+      checkActiveFilters();
+      renderPosts();
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      currentSearch = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      checkActiveFilters();
+      renderPosts();
+    }
+
+    function resetFilters() {
+      currentCategory = 'all';
+      currentStage = 'all';
+      currentTag = null;
+      currentSearch = '';
+      document.getElementById('searchInput').value = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      setCategoryFilter('all');
+      setStageFilter('all');
+      checkActiveFilters();
+      renderTagCloud();
+      renderPosts();
+    }
+
+    function checkActiveFilters() {
+      const notice = document.getElementById('activeFilterNotice');
+      if (currentCategory !== 'all' || currentStage !== 'all' || currentTag || currentSearch.trim()) {
+        notice.classList.remove('hidden');
+        notice.classList.add('flex');
+      } else {
+        notice.classList.add('hidden');
+        notice.classList.remove('flex');
+      }
+    }
+
+    // ==========================================
+    // READER MODAL (openReader / closeReader)
+    // ==========================================
+    function openReader(postId) {
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      activeReaderPostId = postId;
+
+      const modal = document.getElementById('readerModal');
+      const title = document.getElementById('readerTitle');
+      const summary = document.getElementById('readerSummary');
+      const summaryBox = document.getElementById('readerSummaryBox');
+      const date = document.getElementById('readerDate');
+      const stageBadge = document.getElementById('readerStageBadge');
+      const categoryBadge = document.getElementById('readerCategoryBadge');
+      const tagsContainer = document.getElementById('readerTags');
+      const contentEl = document.getElementById('readerContent');
+      const fileContainer = document.getElementById('readerFileContainer');
+      const bibtexContainer = document.getElementById('readerBibtexContainer');
+      const bibtexContent = document.getElementById('readerBibtexContent');
+      const clapCount = document.getElementById('readerClapCount');
+
+      title.textContent = post.title;
+      date.textContent = new Date(post.created_at).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' });
+      categoryBadge.textContent = post.category;
+      clapCount.textContent = post.claps_count || 0;
+
+      const stageMap = {
+        seedling: '🌱 Seedling (Hạt mầm)',
+        budding: '🌿 Budding (Chồi non)',
+        evergreen: '🌲 Evergreen (Thường xanh)'
+      };
+      stageBadge.textContent = stageMap[post.growth_stage] || '🌱 Seedling';
+
+      if (post.summary) {
+        summary.textContent = post.summary;
+        summaryBox.classList.remove('hidden');
+      } else {
+        summaryBox.classList.add('hidden');
+      }
+
+      // Tags
+      tagsContainer.innerHTML = (post.tags || []).map(t => `<span class="hover:underline cursor-pointer" onclick="closeReader(); setTagFilter('${escapeHtml(t)}');">#${escapeHtml(t)}</span>`).join(' ');
+
+      // Attached File
+      if (post.file_url) {
+        fileContainer.classList.remove('hidden');
+        const isPdf = post.file_url.toLowerCase().endsWith('.pdf');
+        if (isPdf) {
+          fileContainer.innerHTML = `
+            <a href="${post.file_url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-xs font-mono hover:text-emerald-600 transition-colors">
+              <i data-lucide="file-text" class="w-4 h-4 text-rose-500"></i>
+              <span>Xem tài liệu PDF đính kèm</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i>
+            </a>
+          `;
+        } else {
+          fileContainer.innerHTML = `
+            <div class="rounded-xl overflow-hidden border border-stone-200 dark:border-stone-800 shadow-sm max-h-96">
+              <img src="${post.file_url}" alt="${escapeHtml(post.title)}" class="w-full h-full object-cover">
+            </div>
+          `;
+        }
+      } else {
+        fileContainer.classList.add('hidden');
+      }
+
+      // BibTeX (for research papers)
+      if (post.bibtex && post.bibtex.trim()) {
+        bibtexContainer.classList.remove('hidden');
+        bibtexContent.textContent = post.bibtex.trim();
+      } else {
+        bibtexContainer.classList.add('hidden');
+      }
+
+      // Render Markdown
+      contentEl.innerHTML = marked.parse(post.content || '');
+
+      // Render KaTeX in content
+      renderKaTeX(contentEl);
+
+      // Render comments
+      renderReaderComments(postId);
+
+      // Show modal & disable background scroll
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('readerScrollArea').scrollTop = 0;
+
+      lucide.createIcons();
+    }
+
+    function closeReader() {
+      const modal = document.getElementById('readerModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      activeReaderPostId = null;
+    }
+
+    // Story Reader Controls
+    function setReaderFont(font) {
+      readerFontFamily = font;
+      const contentEl = document.getElementById('readerContent');
+      const sansBtn = document.getElementById('fontSansBtn');
+      const serifBtn = document.getElementById('fontSerifBtn');
+
+      if (font === 'serif') {
+        contentEl.classList.remove('reader-sans');
+        contentEl.classList.add('reader-serif');
+        serifBtn.className = "px-2 py-1 rounded bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 font-semibold";
+        sansBtn.className = "px-2 py-1 rounded hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500 font-sans";
+      } else {
+        contentEl.classList.remove('reader-serif');
+        contentEl.classList.add('reader-sans');
+        sansBtn.className = "px-2 py-1 rounded bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 font-semibold";
+        serifBtn.className = "px-2 py-1 rounded hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500 font-serif";
+      }
+    }
+
+    function changeReaderFontSize(delta) {
+      readerFontSizeLevel = Math.max(0, Math.min(3, readerFontSizeLevel + delta));
+      const sizeClasses = ['text-sm', 'text-base', 'text-lg', 'text-xl'];
+      const contentEl = document.getElementById('readerContent');
+      sizeClasses.forEach(c => contentEl.classList.remove(c));
+      contentEl.classList.add(sizeClasses[readerFontSizeLevel]);
+    }
+
+    function copyBibtex() {
+      const content = document.getElementById('readerBibtexContent').textContent;
+      navigator.clipboard.writeText(content);
+      const textSpan = document.getElementById('copyBibtexText');
+      textSpan.textContent = "Đã chép!";
+      setTimeout(() => textSpan.textContent = "Sao chép", 2000);
+    }
+
+    // ==========================================
+    // REAL COMMENTS SYSTEM (addComment)
+    // ==========================================
+    function renderReaderComments(postId) {
+      const listEl = document.getElementById('readerCommentsList');
+      const countEl = document.getElementById('readerCommentsCount');
+      const postComments = comments.filter(c => c.post_id === postId);
+
+      countEl.textContent = `${postComments.length} bình luận`;
+
+      if (postComments.length === 0) {
+        listEl.innerHTML = `
+          <div class="py-6 text-center text-xs text-stone-400 font-mono">
+            Chưa có bình luận nào. Hãy là người đầu tiên gieo mầm thảo luận!
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = postComments.map(c => `
+        <div class="p-3.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 space-y-1.5 group">
+          <div class="flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold text-[11px] uppercase">
+                ${escapeHtml(c.author_name.slice(0, 1))}
+              </div>
+              <span class="font-semibold text-stone-900 dark:text-stone-100">${escapeHtml(c.author_name)}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <time class="font-mono text-[10px] text-stone-400">
+                ${new Date(c.created_at).toLocaleDateString('vi-VN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              </time>
+              ${isAdmin() ? `
+                <button onclick="deleteComment('${c.id}')" class="p-1 rounded text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors" title="Xóa bình luận này (Admin)">
+                  <i data-lucide="trash-2" class="w-3 h-3"></i>
+                </button>
+              ` : ''}
+            </div>
+          </div>
+          <p class="text-xs text-stone-700 dark:text-stone-300 pl-8 leading-relaxed">${escapeHtml(c.content)}</p>
+        </div>
+      `).join('');
+    }
+
+    async function submitComment(e) {
+      e.preventDefault();
+      if (!activeReaderPostId) return;
+
+      const authorInput = document.getElementById('commentAuthorInput');
+      const contentInput = document.getElementById('commentContentInput');
+      const statusNotice = document.getElementById('commentStatusNotice');
+      const submitBtn = document.getElementById('commentSubmitBtn');
+
+      const author = authorInput.value.trim();
+      const content = contentInput.value.trim();
+      if (!author || !content) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Đang gửi...</span>`;
+      lucide.createIcons();
+
+      const newComment = {
+        id: "comm-" + Date.now(),
+        post_id: activeReaderPostId,
+        author_name: author,
+        content: content,
+        created_at: new Date().toISOString()
+      };
+
+      // Optimistic UI: Prepend immediately
+      comments.unshift(newComment);
+      renderReaderComments(activeReaderPostId);
+      updateGlobalStats();
+
+      // Cloud Sync if Supabase is active
+      if (isCloudConnected && supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient
+            .from('comments')
+            .insert([{
+              post_id: activeReaderPostId,
+              author_name: author,
+              content: content
+            }])
+            .select();
+
+          if (!error && data && data[0]) {
+            newComment.id = data[0].id;
+          }
+        } catch (err) {
+          console.warn("Lỗi sync comment Supabase:", err);
+        }
+      } else {
+        // Save local mock
+        localStorage.setItem('garden_mock_comments', JSON.stringify(comments));
+      }
+
+      authorInput.value = '';
+      contentInput.value = '';
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i><span>Gửi bình luận</span>`;
+      statusNotice.textContent = "Bình luận đã gửi thành công!";
+      setTimeout(() => statusNotice.textContent = "", 3000);
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // CLAP / LIKE INTERACTION (toggleClap)
+    // ==========================================
+    async function toggleClap(postId, event) {
+      if (event) event.stopPropagation();
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      // Optimistic UI
+      post.claps_count = (post.claps_count || 0) + 1;
+      const cardCounter = document.getElementById(`card-clap-${postId}`);
+      if (cardCounter) cardCounter.textContent = post.claps_count;
+
+      if (activeReaderPostId === postId) {
+        const readerClapCount = document.getElementById('readerClapCount');
+        if (readerClapCount) readerClapCount.textContent = post.claps_count;
+      }
+      updateGlobalStats();
+
+      // Sync to Supabase
+      if (isCloudConnected && supabaseClient) {
+        try {
+          await supabaseClient
+            .from('posts')
+            .update({ claps_count: post.claps_count })
+            .eq('id', postId);
+        } catch (err) {
+          console.warn("Lỗi cập nhật clap Supabase:", err);
+        }
+      } else {
+        localStorage.setItem('garden_mock_posts', JSON.stringify(posts));
+      }
+    }
+
+    function handleReaderClap() {
+      if (activeReaderPostId) {
+        toggleClap(activeReaderPostId);
+      }
+    }
+
+    // ==========================================
+    // PUBLISH NEW NOTE (createPost & uploadFile)
+    // ==========================================
+    function openNewNoteModal() {
+      document.getElementById('newNoteModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      switchEditorTab('edit');
+      lucide.createIcons();
+    }
+
+    function closeNewNoteModal() {
+      document.getElementById('newNoteModal').classList.add('hidden');
+      document.body.style.overflow = '';
+      document.getElementById('newNoteForm').reset();
+      document.getElementById('noteStatusMessage').classList.add('hidden');
+    }
+
+    function switchEditorTab(tab) {
+      const editBtn = document.getElementById('tabEditBtn');
+      const previewBtn = document.getElementById('tabPreviewBtn');
+      const inputWrap = document.getElementById('editorInputWrapper');
+      const prevWrap = document.getElementById('editorPreviewWrapper');
+
+      if (tab === 'preview') {
+        editBtn.className = "px-2 py-0.5 rounded text-stone-500 hover:text-stone-900 dark:hover:text-stone-100";
+        previewBtn.className = "px-2 py-0.5 rounded bg-white dark:bg-stone-700 font-semibold shadow-2xs";
+        inputWrap.classList.add('hidden');
+        prevWrap.classList.remove('hidden');
+
+        const mdText = document.getElementById('noteContent').value;
+        prevWrap.innerHTML = marked.parse(mdText || '*Chưa có nội dung để xem trước.*');
+        renderKaTeX(prevWrap);
+      } else {
+        editBtn.className = "px-2 py-0.5 rounded bg-white dark:bg-stone-700 font-semibold shadow-2xs";
+        previewBtn.className = "px-2 py-0.5 rounded text-stone-500 hover:text-stone-900 dark:hover:text-stone-100";
+        inputWrap.classList.remove('hidden');
+        prevWrap.classList.add('hidden');
+      }
+    }
+
+    async function uploadFile(file) {
+      if (!file) return null;
+
+      if (isCloudConnected && supabaseClient) {
+        try {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+          const filePath = `${fileName}`;
+
+          const { error: uploadError } = await supabaseClient
+            .storage
+            .from('garden-files')
+            .upload(filePath, file);
+
+          if (!uploadError) {
+            const { data } = supabaseClient
+              .storage
+              .from('garden-files')
+              .getPublicUrl(filePath);
+
+            return data.publicUrl;
+          } else {
+            console.warn("Lỗi upload Supabase storage:", uploadError);
+          }
+        } catch (e) {
+          console.warn("Storage upload exception:", e);
+        }
+      }
+
+      // Local fallback: convert to Data URL for instant preview
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleCreatePost(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('noteSubmitBtn');
+      const statusMsg = document.getElementById('noteStatusMessage');
+
+      const title = document.getElementById('noteTitle').value.trim();
+      const category = document.getElementById('noteCategory').value;
+      const growth_stage = document.getElementById('noteGrowthStage').value;
+      const rawTags = document.getElementById('noteTags').value;
+      const summary = document.getElementById('noteSummary').value.trim();
+      const content = document.getElementById('noteContent').value.trim();
+      const bibtex = document.getElementById('noteBibtex').value.trim();
+      const fileInput = document.getElementById('noteFileInput');
+
+      if (!title || !content) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Đang xử lý & upload...</span>`;
+      statusMsg.className = "p-2.5 rounded-lg text-xs font-mono bg-stone-100 dark:bg-stone-800 text-stone-600 block";
+      statusMsg.textContent = "Đang kiểm tra và tải tệp đính kèm...";
+      lucide.createIcons();
+
+      // Process tags
+      const tags = rawTags
+        ? rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0)
+        : [];
+
+      // Upload file
+      let fileUrl = null;
+      if (fileInput.files && fileInput.files[0]) {
+        fileUrl = await uploadFile(fileInput.files[0]);
+      }
+
+      const newPost = {
+        id: "post-" + Date.now(),
+        title,
+        category,
+        growth_stage,
+        tags,
+        summary,
+        content,
+        bibtex: bibtex || null,
+        file_url: fileUrl,
+        claps_count: 0,
+        created_at: new Date().toISOString()
+      };
+
+      // Push to Supabase if connected
+      if (isCloudConnected && supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient
+            .from('posts')
+            .insert([{
+              title,
+              category,
+              growth_stage,
+              tags,
+              summary,
+              content,
+              bibtex: bibtex || null,
+              file_url: fileUrl,
+              claps_count: 0
+            }])
+            .select();
+
+          if (!error && data && data[0]) {
+            newPost.id = data[0].id;
+          }
+        } catch (err) {
+          console.warn("Lỗi lưu bài viết lên Supabase:", err);
+        }
+      } else {
+        localStorage.setItem('garden_mock_posts', JSON.stringify([newPost, ...posts]));
+      }
+
+      // Add to memory
+      posts.unshift(newPost);
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<i data-lucide="upload-cloud" class="w-4 h-4"></i><span>Xuất bản ghi chú</span>`;
+      lucide.createIcons();
+
+      renderPosts();
+      renderTagCloud();
+      updateGlobalStats();
+
+      closeNewNoteModal();
+      openReader(newPost.id);
+    }
+
+    // ==========================================
+    // ADMIN ACTIONS: EDIT & DELETE POSTS & COMMENTS
+    // ==========================================
+    function openEditPostModal(postId) {
+      if (!isAdmin()) {
+        openLoginModal();
+        return;
+      }
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      document.getElementById('editPostId').value = post.id;
+      document.getElementById('editPostTitle').value = post.title || '';
+      document.getElementById('editPostCategory').value = post.category || 'research';
+      document.getElementById('editPostGrowthStage').value = post.growth_stage || 'seedling';
+      document.getElementById('editPostTags').value = (post.tags || []).join(', ');
+      document.getElementById('editPostSummary').value = post.summary || '';
+      document.getElementById('editPostContent').value = post.content || '';
+      document.getElementById('editPostBibtex').value = post.bibtex || '';
+      
+      const fileNotice = document.getElementById('editCurrentFileNotice');
+      if (post.file_url) {
+        fileNotice.textContent = `Tệp hiện tại: ${post.file_url.slice(0, 50)}... (chọn tệp mới nếu muốn thay thế)`;
+      } else {
+        fileNotice.textContent = 'Chưa có tệp đính kèm';
+      }
+
+      switchEditEditorTab('edit');
+      document.getElementById('editPostModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closeEditPostModal() {
+      document.getElementById('editPostModal').classList.add('hidden');
+      document.body.style.overflow = '';
+      document.getElementById('editPostForm').reset();
+    }
+
+    function switchEditEditorTab(tab) {
+      const editBtn = document.getElementById('editTabEditBtn');
+      const prevBtn = document.getElementById('editTabPreviewBtn');
+      const inputWrap = document.getElementById('editInputWrapper');
+      const prevWrap = document.getElementById('editPreviewWrapper');
+
+      if (tab === 'preview') {
+        editBtn.className = "px-2 py-0.5 rounded text-stone-500 hover:text-stone-900 dark:hover:text-stone-100";
+        prevBtn.className = "px-2 py-0.5 rounded bg-white dark:bg-stone-700 font-semibold shadow-2xs";
+        inputWrap.classList.add('hidden');
+        prevWrap.classList.remove('hidden');
+
+        const mdText = document.getElementById('editPostContent').value;
+        prevWrap.innerHTML = marked.parse(mdText || '*Chưa có nội dung xem trước.*');
+        renderKaTeX(prevWrap);
+      } else {
+        editBtn.className = "px-2 py-0.5 rounded bg-white dark:bg-stone-700 font-semibold shadow-2xs";
+        prevBtn.className = "px-2 py-0.5 rounded text-stone-500 hover:text-stone-900 dark:hover:text-stone-100";
+        inputWrap.classList.remove('hidden');
+        prevWrap.classList.add('hidden');
+      }
+    }
+
+    async function handleUpdatePost(e) {
+      e.preventDefault();
+      if (!isAdmin()) return;
+
+      const submitBtn = document.getElementById('editSubmitBtn');
+      const postId = document.getElementById('editPostId').value;
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      const title = document.getElementById('editPostTitle').value.trim();
+      const category = document.getElementById('editPostCategory').value;
+      const growth_stage = document.getElementById('editPostGrowthStage').value;
+      const rawTags = document.getElementById('editPostTags').value;
+      const summary = document.getElementById('editPostSummary').value.trim();
+      const content = document.getElementById('editPostContent').value.trim();
+      const bibtex = document.getElementById('editPostBibtex').value.trim();
+      const fileInput = document.getElementById('editFileInput');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Đang cập nhật...</span>`;
+      lucide.createIcons();
+
+      let fileUrl = post.file_url;
+      if (fileInput.files && fileInput.files[0]) {
+        fileUrl = await uploadFile(fileInput.files[0]);
+      }
+
+      const tags = rawTags
+        ? rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0)
+        : [];
+
+      // Update post in memory
+      post.title = title;
+      post.category = category;
+      post.growth_stage = growth_stage;
+      post.tags = tags;
+      post.summary = summary;
+      post.content = content;
+      post.bibtex = bibtex || null;
+      post.file_url = fileUrl;
+
+      // Sync to Supabase
+      if (isCloudConnected && supabaseClient) {
+        try {
+          await supabaseClient
+            .from('posts')
+            .update({
+              title,
+              category,
+              growth_stage,
+              tags,
+              summary,
+              content,
+              bibtex: bibtex || null,
+              file_url: fileUrl
+            })
+            .eq('id', postId);
+        } catch (err) {
+          console.warn("Lỗi update Supabase:", err);
+        }
+      } else {
+        localStorage.setItem('garden_mock_posts', JSON.stringify(posts));
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i><span>Lưu thay đổi bài viết</span>`;
+      lucide.createIcons();
+
+      closeEditPostModal();
+      renderPosts();
+      renderTagCloud();
+      if (activeReaderPostId === postId) {
+        openReader(postId);
+      }
+    }
+
+    async function deletePost(postId) {
+      if (!isAdmin()) {
+        openLoginModal();
+        return;
+      }
+
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      if (!confirm(`Bạn có chắc chắn muốn xóa bài viết "${post.title}"? Thao tác này không thể hoàn tác.`)) {
+        return;
+      }
+
+      posts = posts.filter(p => p.id !== postId);
+      comments = comments.filter(c => c.post_id !== postId);
+
+      if (isCloudConnected && supabaseClient) {
+        try {
+          await supabaseClient.from('posts').delete().eq('id', postId);
+        } catch (err) {
+          console.warn("Lỗi delete Supabase post:", err);
+        }
+      } else {
+        localStorage.setItem('garden_mock_posts', JSON.stringify(posts));
+        localStorage.setItem('garden_mock_comments', JSON.stringify(comments));
+      }
+
+      if (activeReaderPostId === postId) {
+        closeReader();
+      }
+
+      renderPosts();
+      renderTagCloud();
+      updateGlobalStats();
+    }
+
+    async function deleteComment(commentId) {
+      if (!isAdmin()) {
+        openLoginModal();
+        return;
+      }
+
+      if (!confirm("Bạn có chắc chắn muốn xóa bình luận này?")) {
+        return;
+      }
+
+      comments = comments.filter(c => c.id !== commentId);
+
+      if (isCloudConnected && supabaseClient) {
+        try {
+          await supabaseClient.from('comments').delete().eq('id', commentId);
+        } catch (err) {
+          console.warn("Lỗi delete Supabase comment:", err);
+        }
+      } else {
+        localStorage.setItem('garden_mock_comments', JSON.stringify(comments));
+      }
+
+      if (activeReaderPostId) {
+        renderReaderComments(activeReaderPostId);
+      }
+      updateGlobalStats();
+    }
+
+    // ==========================================
+    // SETTINGS MODAL & CLOUD CONFIGURATION
+    // ==========================================
+    function openSettingsModal() {
+      const url = localStorage.getItem('garden_supabase_url') || '';
+      const key = localStorage.getItem('garden_supabase_key') || '';
+      document.getElementById('supabaseUrlInput').value = url;
+      document.getElementById('supabaseKeyInput').value = key;
+      document.getElementById('settingsConnectionResult').classList.add('hidden');
+      document.getElementById('settingsModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function saveSupabaseSettings() {
+      const url = document.getElementById('supabaseUrlInput').value.trim();
+      const key = document.getElementById('supabaseKeyInput').value.trim();
+      const resultBox = document.getElementById('settingsConnectionResult');
+
+      if (!url || !key) {
+        resultBox.className = "p-2 rounded-lg font-mono text-[11px] bg-rose-500/10 text-rose-600 block";
+        resultBox.textContent = "Vui lòng nhập đầy đủ SUPABASE_URL và SUPABASE_ANON_KEY.";
+        return;
+      }
+
+      localStorage.setItem('garden_supabase_url', url);
+      localStorage.setItem('garden_supabase_key', key);
+
+      initSupabaseClient();
+      fetchPosts();
+
+      resultBox.className = "p-2 rounded-lg font-mono text-[11px] bg-emerald-500/10 text-emerald-600 block";
+      resultBox.textContent = "Đã lưu thông tin Supabase! Hệ thống đang đồng bộ với Cloud PostgreSQL.";
+    }
+
+    async function testSupabaseConnection() {
+      const url = document.getElementById('supabaseUrlInput').value.trim();
+      const key = document.getElementById('supabaseKeyInput').value.trim();
+      const resultBox = document.getElementById('settingsConnectionResult');
+
+      if (!url || !key) {
+        resultBox.className = "p-2 rounded-lg font-mono text-[11px] bg-rose-500/10 text-rose-600 block";
+        resultBox.textContent = "Vui lòng nhập URL và Key trước khi kiểm tra.";
+        return;
+      }
+
+      resultBox.className = "p-2 rounded-lg font-mono text-[11px] bg-stone-100 text-stone-600 block";
+      resultBox.textContent = "Đang kiểm tra kết nối tới Supabase...";
+
+      try {
+        const client = window.supabase.createClient(url, key);
+        const { data, error } = await client.from('posts').select('id').limit(1);
+
+        if (error) {
+          resultBox.className = "p-2 rounded-lg font-mono text-[11px] bg-amber-500/10 text-amber-700 block";
+          resultBox.textContent = `Kết nối thành công tới Project, nhưng bảng 'posts' chưa được tạo. Hãy chạy Script SQL Migration bên dưới! (${error.message})`;
+        } else {
+          resultBox.className = "p-2 rounded-lg font-mono text-[11px] bg-emerald-500/10 text-emerald-600 block";
+          resultBox.textContent = "Kết nối thành công! Bảng 'posts' đã sẵn sàng trên Cloud Supabase.";
+        }
+      } catch (err) {
+        resultBox.className = "p-2 rounded-lg font-mono text-[11px] bg-rose-500/10 text-rose-600 block";
+        resultBox.textContent = "Lỗi kết nối: " + err.message;
+      }
+    }
+
+    function clearSupabaseSettings() {
+      localStorage.removeItem('garden_supabase_url');
+      localStorage.removeItem('garden_supabase_key');
+      document.getElementById('supabaseUrlInput').value = '';
+      document.getElementById('supabaseKeyInput').value = '';
+      initSupabaseClient();
+      fetchPosts();
+
+      const resultBox = document.getElementById('settingsConnectionResult');
+      resultBox.className = "p-2 rounded-lg font-mono text-[11px] bg-stone-100 text-stone-600 block";
+      resultBox.textContent = "Đã ngắt kết nối Supabase. Chuyển về chế độ Demo Offline.";
+    }
+
+    function copySqlMigration() {
+      const sql = document.getElementById('sqlMigrationCode').textContent;
+      navigator.clipboard.writeText(sql);
+      const textSpan = document.getElementById('copySqlText');
+      textSpan.textContent = "Đã chép SQL!";
+      setTimeout(() => textSpan.textContent = "Sao chép SQL", 2000);
+    }
+
+    function resetToInitialMockData() {
+      if (confirm("Khôi phục toàn bộ 4 bài viết mẫu và bình luận mặc định?")) {
+        localStorage.removeItem('garden_mock_posts');
+        localStorage.removeItem('garden_mock_comments');
+        posts = [...INITIAL_POSTS];
+        comments = [...INITIAL_COMMENTS];
+        renderPosts();
+        renderTagCloud();
+        updateGlobalStats();
+        closeSettingsModal();
+      }
+    }
+
+    // ==========================================
+    // UTILITIES
+    // ==========================================
+    function updateGlobalStats() {
+      document.getElementById('statTotalPosts').textContent = posts.length;
+      const totalClaps = posts.reduce((sum, p) => sum + (p.claps_count || 0), 0);
+      document.getElementById('statTotalClaps').textContent = totalClaps.toLocaleString();
+      document.getElementById('statTotalComments').textContent = comments.length.toLocaleString();
+    }
+
+    function renderKaTeX(containerEl) {
+      if (window.renderMathInElement) {
+        try {
+          window.renderMathInElement(containerEl, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false },
+              { left: "\\(", right: "\\)", display: false },
+              { left: "\\[", right: "\\]", display: true }
+            ],
+            throwOnError: false
+          });
+        } catch (e) {
+          console.warn("KaTeX render notice:", e);
+        }
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  </script>
+
+</body>
+</html>

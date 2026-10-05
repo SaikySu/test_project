@@ -1,0 +1,44 @@
+[
+  {
+    "id": "c_1791163944407_2pui4",
+    "slug": "quantum-graph-neural-networks",
+    "name": "Kiểm thử viên",
+    "content": "Hệ thống nhận xét hoạt động trơn tru!",
+    "createdAt": "2026-10-05T01:32:24.407Z"
+  },
+  {
+    "id": "c1",
+    "slug": "quantum-graph-neural-networks",
+    "name": "TS. Trần Hoàng Nam",
+    "content": "Bài viết giải thích công thức biến phân PQC và Parameter-shift rule rất chặt chẽ và dễ hiểu! Bạn có định thử nghiệm thêm trên phần cứng IBM Quantum Eagle thật không?",
+    "createdAt": "2026-03-29T14:32:00.000Z"
+  },
+  {
+    "id": "c2",
+    "slug": "synapse-engine-open-source",
+    "name": "Lê Bảo Anh (Rustacean)",
+    "content": "Tuyệt vời quá! Mình đã clone repo và test thử ma trận Attention trên chip M2, tốc độ render shader WGSL cực kỳ mượt mà. Đã tặng bạn 1 star trên GitHub!",
+    "createdAt": "2026-03-16T09:15:00.000Z"
+  },
+  {
+    "id": "c3",
+    "slug": "novel-three-body-problem-reflections",
+    "name": "Mai Phương Chi",
+    "content": "Đoạn so sánh Lý thuyết Khu rừng Đen với cuộc đua AI làm mình nổi da gà. Khi cả hai bên đều không biết giới hạn thuật toán của nhau, sự nghi kỵ sẽ đẩy tốc độ phát triển lên đỉnh điểm.",
+    "createdAt": "2026-03-23T20:45:00.000Z"
+  },
+  {
+    "id": "c4",
+    "slug": "blog-digital-gardening-manifesto",
+    "name": "Đặng Quốc Huy",
+    "content": "Giao diện khu vườn số của bạn tối giản và thanh tao vô cùng. Đọc bài viết thấy có cảm hứng xây dựng riêng cho mình một không gian như thế này thay vì lướt mạng xã hội.",
+    "createdAt": "2026-01-22T11:20:00.000Z"
+  },
+  {
+    "id": "c5",
+    "slug": "game-design-chronicles-of-aetheria",
+    "name": "Vũ Hải Đăng",
+    "content": "Cơ chế Spore Staff và du hành 3 mốc thời gian 300 năm rất độc đáo! Nếu làm theo phong cách đồ hoạ 2D pixel art hay low-poly phong cách Ghibli thì sẽ cực kỳ ăn khách.",
+    "createdAt": "2026-03-02T16:04:00.000Z"
+  }
+]
